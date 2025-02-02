@@ -66,21 +66,45 @@
         </div>
 
         <div class="flex items-center w-full max-w-md">
-          <input type="search" name="ra" id="ra" placeholder="RA do eleitor" autofocus
-            class="border- border-gray-300 rounded-l-lg p-3 w-full text-center text-gray-700 h-10 uppercase"
-            maxlength="4" />
+          <div class="relative w-full">
+            <!-- Select para escolher RA, Nome ou Classe -->
+            <select id="searchOption" onchange="atualizarPlaceholder()" class="absolute left-0 top-0 z-10 w-1/4 h-full pl-3 bg-transparent outline-none border-none rounded-l-lg">
+              <option value="ra">RA</option>
+              <option value="nome">Nome</option>
+              <option value="classe">Classe</option>
+            </select>
+            <!-- Input de busca -->
+            <input type="search" name="ra" id="ra" placeholder="RA do eleitor" autofocus
+              class="border- border-gray-300 rounded-r-lg pl-12 p-3 w-full text-center text-gray-700 h-10 uppercase"
+              maxlength="4" />
+          </div>
           <button
             class="azul text-white p-3 rounded-r-lg hover:bg-blue-700 transition h-10 flex items-center justify-center"
             id="buscarBTN" onclick="buscarEleitores()" title="Consultar eleitor">
             <i class="fa-solid fa-magnifying-glass"></i>
           </button>
         </div>
+        
       </div>
     </div>
   </div>
 
   <script src="mainMesario.js"></script>
   <script>
+
+function atualizarPlaceholder() {
+    const searchOption = document.getElementById("searchOption").value;
+    const input = document.getElementById("ra");
+    
+    if (searchOption === "ra") {
+      input.placeholder = "RA do eleitor";
+    } else if (searchOption === "nome") {
+      input.placeholder = "Nome do eleitor";
+    } else if (searchOption === "classe") {
+      input.placeholder = "Classe do eleitor";
+    }
+  }
+
     var input = document.getElementById("ra");
 
     // Força letras maiúsculas no input

@@ -2191,3 +2191,15 @@ body.dark-theme {
 .dark-theme .bg-white {
   background-color: #0e1015;
 }
+
+.icon-rotate {
+  transform: scaleX(-1);
+}
+
+.white-text-imp {
+  color: white !important;
+}
+
+.dark-mode .white-text-imp {
+  color: white !important;
+}

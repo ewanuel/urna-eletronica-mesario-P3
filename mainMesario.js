@@ -78,20 +78,37 @@ function entrarContagem() {
 }
 
 
-const switcher = document.getElementById('md_es');
-
 function toggleTheme() {
   document.body.classList.toggle('dark-theme');
   const button = document.getElementById('md_es');
 
   if (document.body.classList.contains('dark-theme')) {
-    switcher.textContent = 'Modo Claro';
+    button.innerHTML = '<i class="fa-solid fa-sun"></i> Modo Claro';
     localStorage.setItem('theme', 'dark');
+    console.log('Tema mudado para escuro, localStorage:', localStorage.getItem('theme'));
   } else {
-    switcher.textContent = 'Modo Escuro';
+    button.innerHTML = '<i class="fa-solid fa-moon"></i> Modo Escuro';
     localStorage.setItem('theme', 'light');
+    console.log('Tema mudado para claro, localStorage:', localStorage.getItem('theme'));
   }
 }
+
+function applySavedTheme() {
+  const savedTheme = localStorage.getItem('theme');
+  const button = document.getElementById('md_es');
+
+  console.log('Tema salvo ao carregar:', savedTheme);
+
+  if (savedTheme === 'dark') {
+    document.body.classList.add('dark-theme');
+    button.innerHTML = '<i class="fa-solid fa-sun"></i> Modo Claro';
+  } else {
+    document.body.classList.remove('dark-theme');
+    button.innerHTML = '<i class="fa-solid fa-moon"></i> Modo Escuro';
+  }
+}
+
+document.addEventListener('DOMContentLoaded', applySavedTheme);
 
 // Aplicar o tema salvo do Local Storage ao carregar a página
 // document.addEventListener('DOMContentLoaded', function () {
