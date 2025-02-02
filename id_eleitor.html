@@ -30,8 +30,9 @@
       <a href="hub.html">Home</a>
       <a href="hub_chapas.html">Gerenciador de Candidatos</a>
       <a href="hub_eleitor.html">Gerenciador de Eleitores</a>
+      <a onclick="AdmPopup()" class="w-full bg-yellow-500 hover:bg-yellow-600 cursor-pointer text-white py-2 px-4 rounded-lg text-md font-semibold transition white-text-imp"title="Sair do Sistema"><i class="fa-solid fa-lock mr-2"></i>Administração</a>
       <a href="id_eleitor.html">Iniciar Processo</a>
-      <a href="index.html">Sair</a>
+      <a href="index.html" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg text-md font-semibold transition white-text-imp"title="Sair do Sistema"><i class="fa-solid fa-right-from-bracket mr-2 icon-rotate"></i>Sair</a>
     </div>
   </nav>
 
@@ -75,8 +76,8 @@
             </select>
             <!-- Input de busca -->
             <input type="search" name="ra" id="ra" placeholder="RA do eleitor" autofocus
-              class="border- border-gray-300 rounded-r-lg pl-12 p-3 w-full text-center text-gray-700 h-10 uppercase"
-              maxlength="4" />
+              class="border- border-gray-300 rounded-r-lg pl-12 p-3 w-full text-center text-gray-700 h-10 uppercase" 
+              />
           </div>
           <button
             class="azul text-white p-3 rounded-r-lg hover:bg-blue-700 transition h-10 flex items-center justify-center"
@@ -85,81 +86,82 @@
           </button>
         </div>
         
+        
       </div>
     </div>
+
+    <div class="absolute top-4 right-4">
+      <button class="bg-sky-700 hover:bg-sky-950 text-white py-3 px-5 rounded-lg text-md font-semibold transition border-none" id="question" onclick="openPopup()"><i class="fa-solid fa-question"></i>
+      </button>
+    </div>
+
+    <div id="helpPopup" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+      <div class="bg-white rounded-lg p-8 max-w-md mx-auto shadow-custom">
+        <h3 class="text-gray-700 text-xl font-bold mb-4">Ajuda</h3>
+        <p class="text-gray-600 mb-4"></p>
+        <button onclick="closePopup()" class="bg-sky-700 hover:bg-sky-950 text-white py-2 px-4 rounded-lg text-md font-semibold transition">Fechar</button>
+      </div>
+    </div>
+
   </div>
 
   <script src="mainMesario.js"></script>
   <script>
 
-function atualizarPlaceholder() {
-    const searchOption = document.getElementById("searchOption").value;
-    const input = document.getElementById("ra");
+function buscarEleitores() {
+  const pesquisa = document.getElementById("ra").value;
+  const searchOption = document.getElementById("searchOption").value;
+
+  console.log("Iniciando a busca para:", pesquisa);
+
+  let url = `${BaseUrl}/eleitor/`;
+
+  if (searchOption === "ra") {
+    url += pesquisa;  
+  } else if (searchOption === "nome") {
+    url += `nome/${pesquisa}`;  
+  } else if (searchOption === "classe") {
     
-    if (searchOption === "ra") {
-      input.placeholder = "RA do eleitor";
-    } else if (searchOption === "nome") {
-      input.placeholder = "Nome do eleitor";
-    } else if (searchOption === "classe") {
-      input.placeholder = "Classe do eleitor";
-    }
-  }
-
-    var input = document.getElementById("ra");
-
-    // Força letras maiúsculas no input
-    input.addEventListener("input", function () {
-      this.value = this.value.toUpperCase();
-    });
-
-    input.addEventListener("keyup", function (event) {
-      if (event.keyCode === 13) {
-        event.preventDefault();
-        document.getElementById("buscarBTN").click();
+    const classe = pesquisa.slice(0, 2);  
+    url += classe;  
+  }  
+  fetch(url)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Erro na requisição");
       }
+      return response.json();
+    })
+    .then((eleitor) => {
+      const eleitorRA = eleitor.ra;
+
+      const eleitoresContainer = document.getElementById("eleitoresContainer");
+      if (typeof eleitorRA !== "undefined") {
+        eleitoresContainer.innerHTML = `
+          <section class="liberarVoto p-4 border border-black rounded-lg mb-4 text-center">
+              <p class="text-lg font-semibold text-gray-700">${eleitor.nome}. RA: ${eleitor.ra}</p>
+            <button class="w-[100%] h-10 text-center botao bg-green-500 text-white py-2 px-4 rounded-lg mt-4 hover:bg-green-600 transition" id="liberarBTN" onclick="liberarEleitor('${eleitor.ra}')">Liberar Voto</button>
+          </section>
+        `;
+        eleitoresContainer.classList.remove("hidden");
+        eleitoresContainer.style.display = "block";
+      } else {
+        eleitoresContainer.classList.add("hidden");
+        eleitoresContainer.innerHTML = "";
+      }
+    })
+    .catch((error) => {
+      console.log("Erro na requisição:", error);
+      document.getElementById("mensagem").innerHTML = "Eleitor não encontrado ou incorreto.";
+      document.getElementById("mensagem").style.color = "red";
+      document.getElementById("mensagem").style.display = "block";
+
+      setTimeout(function () {
+        document.getElementById("mensagem").innerHTML = "";
+        document.getElementById("mensagem").style.display = "none";
+      }, 4000);
     });
-
-    function buscarEleitores() {
-      const ra = document.getElementById("ra").value;
-      console.log("Iniciando a busca para o RA:", ra);
-
-      fetch(`${BaseUrl}/eleitor/${ra}`)
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("Erro na requisição");
-          }
-          return response.json();
-        })
-        .then((eleitor) => {
-          const eleitorRA = eleitor.ra;
-
-          const eleitoresContainer = document.getElementById("eleitoresContainer");
-          if (typeof eleitorRA != "undefined") {
-            eleitoresContainer.innerHTML = `
-              <section class="liberarVoto p-4 border border-black rounded-lg mb-4 text-center">
-                  <p class="text-lg font-semibold text-gray-700">${eleitor.nome}. RA: ${eleitor.ra}</p>
-                <button class="w-[100%] h-10 text-center botao bg-green-500 text-white py-2 px-4 rounded-lg mt-4 hover:bg-green-600 transition" id="liberarBTN" onclick="liberarEleitor('${eleitor.ra}')">Liberar Voto</button>
-              </section>
-            `;
-            eleitoresContainer.classList.remove("hidden");
-            eleitoresContainer.style.display = "block";
-          } else {
-            eleitoresContainer.classList.add("hidden");
-            eleitoresContainer.innerHTML = "";
-          }
-        })
-        .catch((error) => {
-          console.log("Erro na requisição:", error);
-          document.getElementById("mensagem").innerHTML = "RA não encontrado ou incorreto.";
-          document.getElementById("mensagem").style.color = "red";
-          document.getElementById("mensagem").style.display = "block";
-
-          setTimeout(function () {
-            document.getElementById("mensagem").innerHTML = "";
-            document.getElementById("mensagem").style.display = "none";
-          }, 4000);
-        });
-    }
+}
 
     function liberarEleitor(ra) {
       const url = `${BaseUrl}/eleitor/verificar/${ra}`;

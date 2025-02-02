@@ -196,4 +196,42 @@ function closePopup() {
   document.getElementById('helpPopup').classList.add('hidden');
 }
 
-document.getElementById('question').addEventListener('click', openPopup);
+function createAdminPopup() {
+  
+  if (document.getElementById('adminPopup')) return;
+
+  const popup = document.createElement('div');
+  popup.id = 'adminPopup';
+  popup.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden';
+  
+
+  popup.innerHTML = `
+      <div class="bg-white rounded-lg p-8 max-w-md mx-auto shadow-custom">
+          <h3 id="adminPopupTitle" class="text-gray-700 text-xl font-bold mb-4"></h3>
+          <p id="adminPopupMessage" class="text-gray-600 mb-4"></p>
+          <button onclick="closeAdminPopup()" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg text-md font-semibold transition">
+              Fechar
+          </button>
+      </div>
+  `;
+
+  document.body.appendChild(popup);
+}
+
+
+function AdmPopup() {
+  createAdminPopup(); 
+
+  if (typeof isAdmin === 'undefined' || !isAdmin) {
+      document.getElementById('adminPopupTitle').textContent = "Acesso Negado";
+      document.getElementById('adminPopupMessage').textContent = "Você não tem permissão para acessar esta página.";
+      document.getElementById('adminPopup').classList.remove('hidden');
+  } else {
+      window.location.href = 'administracao.html'; 
+  }
+}
+
+function closeAdminPopup() {
+  const popup = document.getElementById('adminPopup');
+  if (popup) popup.classList.add('hidden');
+}
