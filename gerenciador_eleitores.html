@@ -242,19 +242,49 @@
         </button>
       </div>
 
-      <div
-        id="helpPopup"
-        class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden"
-      >
+      <div id="helpPopup" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
         <div class="bg-white rounded-lg p-8 max-w-md mx-auto shadow-custom">
           <h3 class="text-gray-700 text-xl font-bold mb-4">Ajuda</h3>
-          <p class="text-gray-600 mb-4"></p>
-          <button
-            onclick="closePopup()"
-            class="bg-sky-700 hover:bg-sky-950 text-white py-2 px-4 rounded-lg text-md font-semibold transition"
-          >
-            Fechar
-          </button>
+          <p class="text-gray-600 mb-4">O Gerenciador de Eleitores possíbilita a visualização e edição desses objetos 
+            <ul>
+              <li class="text-gray-600 mb-4 text-left"><strong>Digite o Nome: </strong> Pesquisa e exibe o eleitor por meio do nome </li>
+              <input
+                type="search"
+                class="searchInput h-10 border border-gray-400 p-2 text-gray-700 rounded-l-lg"
+                id="searchInput"
+                placeholder="Digite o nome"
+                readonly
+              />
+              <button
+              class="azul hover:bg-blue-600 text-white py-2 px-4 rounded-r-lg cursor-default"
+              id="searchButton"
+              title="Consultar chapa ou candidato"
+            ><i class="fa-solid fa-magnifying-glass"></i></button>
+              <li class="text-gray-600 mb-4 text-left"><strong>Selecionar eleitor: </strong> O ícone de seleção armaza o item para uma possível remoção posterior: <button class="select-button text-gray-600 cursor-default" >
+                <i class="fa-solid fa-circle"></i>
+              </button> </li>
+              <li class="text-gray-600 mb-4 text-left"><strong>Deletar eleitor: </strong> O ícone de lixeira deleta o eleitor individualmente: <button class="delete-btn cursor-default">
+                <i class="fa-solid fa-trash-can "></i>
+              </button> </li>
+                <li class="text-gray-600 mb-4 text-left"><strong>Editar eleitor: </strong> O ícone do lapís permite alterações no eleitor: </button>
+                  <button class="edit-btn cursor-default"><i class="fas fa-edit"></i></button></li>
+                <li class="text-gray-600 mb-4 text-left"><strong>Excluir Selecionados: </strong> Remove apenas os eleitores marcados pelo icone de seleção: <button class="select-button text-gray-600 cursor-default" >
+                  <i class="fa-solid fa-circle"></i>
+                </button></li>
+                <button
+              class="bg-red-500 text-white py-2 px-4 rounded-lg font-semibold text-lg transition cursor-default"
+            >
+              <i class="fa-solid fa-trash-can"></i> Excluir Selecionados
+            </button>
+                <li class="text-gray-600 mb-4 text-left"><strong>Deletar Todos: </strong> Deleta todos os eleitores existentes</li>
+                <button
+              class="bg-red-500 text-white py-2 px-4 rounded-lg font-semibold text-lg transition cursor-default"
+            >
+              <i class="fa-solid fa-trash-can"></i> Deletar todos
+            </button>
+          </p>
+          <br>
+          <button onclick="closePopup()" class="bg-sky-700 hover:bg-sky-950 text-white py-2 px-4 rounded-lg text-md font-semibold transition ml-float">Fechar</button>
         </div>
       </div>
     </div>
