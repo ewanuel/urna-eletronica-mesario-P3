@@ -88,8 +88,33 @@
     <div id="helpPopup" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
       <div class="bg-white rounded-lg p-8 max-w-md mx-auto shadow-custom">
         <h3 class="text-gray-700 text-xl font-bold mb-4">Ajuda</h3>
-        <p class="text-gray-600 mb-4"></p>
-        <button onclick="closePopup()" class="bg-sky-700 hover:bg-sky-950 text-white py-2 px-4 rounded-lg text-md font-semibold transition">Fechar</button>
+        <p class="text-gray-600 mb-4">O Menu principal apresenta as opções essenciais para o processo eleitoral
+          tais como:
+          <ul>
+            <li class="text-gray-600 mb-4 text-left"><strong>Gerenciar Candidatos: </strong> Cadastro e visualização dos grêmios ou presidenciaiveis </li>
+            <button
+            class="w-full bg-green-500 text-white py-3 rounded-lg font-semibold text-lg cursor-default">
+            Gerenciar Candidatos
+            </button>
+            <li class="text-gray-600 mb-4 text-left"><strong>Gerenciar Eleitores: </strong> Cadastro, visualização e edição dos eleitores</li>
+            <button 
+            class="w-full bg-green-500 text-white py-3 rounded-lg font-semibold text-lg cursor-default">
+            Gerenciar Eleitores
+          </button>
+          <li class="text-gray-600 mb-4 text-left"><strong>Administração: </strong> Execução, edição e visualização de informações sensíveis, só é vísivel para usuários administradores</li>
+          </ul>
+          <button
+            class="w-full bg-yellow-500 text-white py-3 rounded-lg font-semibold text-lg cursor-default">
+            Administração
+          </button>
+          <li class="text-gray-600 mb-4 text-left"><strong>Iniciar Processo: </strong> Executa o processo de votação autorizando eleitores ao voto</li>
+          <button 
+            class="w-full bg-green-500 text-white py-3 rounded-lg font-semibold text-lg cursor-default">
+            Iniciar Processo
+          </button>
+        </p>
+        <br>
+        <button onclick="closePopup()" class="bg-sky-700 hover:bg-sky-950 text-white py-2 px-4 rounded-lg text-md font-semibold transition ml-float">Fechar</button>
       </div>
     </div>
 
