@@ -55,6 +55,11 @@ function entrarHubChapas() {
   location.href = "hub_chapas.html";
 }
 
+function entrarManual() {
+  document.getElementById("manual");
+  location.href = "manual.html";
+}
+
 function entrarCadastrarEleitor() {
   document.getElementById("cadastrarEleitor");
   location.href = "cadastro-teste.html";

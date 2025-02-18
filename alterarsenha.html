@@ -17,9 +17,10 @@
 </head>
 
 <body class="bg-gray-100 flex items-center justify-center h-screen">
-  <nav class="flex items-center justify-between mb-4">
-    <i class="fa-solid fa-bars cursor-pointer" onclick="toggleMenu()"></i>
+  <nav>
+    <i class="fa-solid fa-bars" onclick="toggleMenu()"></i>
     <div class="nv_est" id="menuItems">
+      <a onclick="entrarManual()" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-lg text-md font-semibold transition white-text-imp cursor-pointer"title="Manual"><i class="fa-solid fa-book-open mr-2"></i>Manual</a>
       <a href="hub.html">Home</a>
       <a href="hub_chapas.html">Gerenciador de Candidatos</a>
       <a href="hub_eleitor.html">Gerenciador de Eleitores</a>
@@ -100,7 +101,33 @@
   <div id="helpPopup" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
     <div class="bg-white rounded-lg p-8 max-w-md mx-auto shadow-custom">
       <h3 class="text-gray-700 text-xl font-bold mb-4">Ajuda</h3>
-      <p class="text-gray-600 mb-4"></p>
+      <li class="text-gray-600 mb-4 text-left"><strong>Selecione o tipo de usuário: </strong> Seleciona o mesario ou administrador para alteração de senha</li>
+                <input
+                    placeholder="Selecione o tipo de usuário"
+                    class="mt-1 p-2 border rounded w-full text-gray-700 h-10"
+                    readonly
+                  />
+                  <li class="text-gray-600 mb-4 text-left"><strong>Digite a nova senha: </strong> Campo de inserção de senha</li>
+                  <input
+                  placeholder="Digite a nova senha"
+                    class="mt-1 p-2 border rounded w-full text-gray-700 h-10"
+                    readonly
+                  />
+
+                  <li class="text-gray-600 mb-4 text-left"><strong>Repita a nova senha: </strong> Campo para validar a senha</li>
+                  <input
+                  placeholder="Repita a nova senha"
+                    class="mt-1 p-2 border rounded w-full text-gray-700 h-10"
+                    readonly
+                  />
+
+                  <li class="text-gray-600 mb-4 text-left"><strong>Salvar: </strong> Efetua a alteração</li>
+                  <button
+          class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-lg font-semibold text-lg transition w-1/2 mr-2 cursor-default"
+          id="salvar" title="salvar">
+          <i class="fa-solid fa-floppy-disk"></i> Salvar
+        </button>
+
       <button onclick="closePopup()" class="bg-sky-700 hover:bg-sky-950 text-white py-2 px-4 rounded-lg text-md font-semibold transition">Fechar</button>
     </div>
   </div>

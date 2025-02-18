@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Manual</title>
+  <link rel="stylesheet" href="styleMesario.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://kit.fontawesome.com/877e197de7.js" crossorigin="anonymous"></script>
+  <style>
+    .shadow-custom {
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .bg-gray-300 {
+  overflow-y: auto;  
+  max-height: 70vh; /* Ajuste conforme necessário */
+  white-space: normal; /* Permite que os elementos quebrem linha */
+}
+
+.bg-gray-300::-webkit-scrollbar {
+  width: 8px; 
+}
+
+.bg-gray-300::-webkit-scrollbar-thumb {
+  background-color: #5a5a5a;
+  border-radius: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.bg-gray-300::-webkit-scrollbar-thumb:hover {
+  background-color: #5a5a5a;
+}
+
+h2 {
+  margin-top: 5%;
+  padding-top: 2px;
+}
+  </style>
+</head>
+
+<body class="bg-gray-100 flex items-center justify-center h-screen">
+  <nav>
+    <i class="fa-solid fa-bars" onclick="toggleMenu()"></i>
+    <div class="nv_est" id="menuItems">
+      <a onclick="entrarManual()" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-lg text-md font-semibold transition white-text-imp cursor-pointer"title="Manual"><i class="fa-solid fa-book-open mr-2"></i>Manual</a>
+      <a href="hub.html">Home</a>
+      <a href="hub_chapas.html">Gerenciador de Candidatos</a>
+      <a href="hub_eleitor.html">Gerenciador de Eleitores</a>
+      <a onclick="AdmPopup()" class="w-full bg-yellow-500 hover:bg-yellow-600 cursor-pointer text-white py-2 px-4 rounded-lg text-md font-semibold transition white-text-imp"title="Sair do Sistema"><i class="fa-solid fa-lock mr-2"></i>Administração</a>
+      <a href="id_eleitor.html">Iniciar Processo</a>
+      <a href="index.html" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg text-md font-semibold transition white-text-imp"title="Sair do Sistema"><i class="fa-solid fa-right-from-bracket mr-2 icon-rotate"></i>Sair</a>
+    </div>
+  </nav>
+
+  <div id="helpPopup" class="container mx-auto p-4">
+
+    <div class="bg-gray-300 rounded-lg shadow-custom p-10 max-w-2xl mx-auto relative scroll-container">
+      <div class="absolute top-4 left-4">
+        <button onclick="toggleTheme()" id="md_es"
+          class="bg-gray-600 hover:bg-black text-white py-2 px-4 rounded-full text-md font-semibold transition"
+          title="Ativar modo escuro">
+          Modo Escuro
+        </button>
+      </div>
+
+      <div class="absolute top-4 right-4">
+        <button onclick="voltarHub()"
+          class="bg-green-500 text-white py-2 px-4 rounded-full text-md font-semibold transition"
+          title="Página anterior">
+          <i class="fa-solid fa-house"></i> Menu Principal
+        </button>
+      </div>
+
+      <div class="text-center space-y-8 mt-6">
+        <div>
+
+          <h2 class="text-gray-700 font-bold text-2xl mb-4">
+            Botões Gerais
+          </h2>
+          
+          <p class="text-gray-600 mb-4">O botões que aparecem em todas as páginas:
+
+          <ul>
+            <li class="text-gray-600 mb-4 text-left"><strong>Modo Escuro/Claro</strong> Alterna entre o tema escuro e claro do sistema</li>
+            <button id="md_es"
+          class="bg-gray-600 hover:bg-black text-white py-2 px-4 rounded-full text-md font-semibold transition cursor-default"
+          title="Ativar modo escuro">
+          Modo Escuro
+          </button>
+          </ul>
+
+          <ul>
+            <li class="text-gray-600 mb-4 text-left"><strong>Menu burger:</strong> Um menu com atalhos para os principais locais do sistema</li>
+            
+            <div style="display: flex; justify-content: center; align-items: center;">
+              <img src="menu burger icon.png" alt="Menu Icon" style="width: 50px;">
+            </div>
+          
+          </ul>
+
+          <ul>
+            <li class="text-gray-600 mb-4 text-left"><strong>Voltar:</strong> volta para a página anterior</li>
+            
+            <button 
+          class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-full text-md font-semibold transition cursor-default"
+          title="Página anterior">
+          <i class="fa-solid fa-circle-chevron-left mr-2"></i> Voltar
+        </button>
+          
+
+          </ul>
+
+          <ul>
+          
+            <li class="text-gray-600 mb-4 text-left"><strong>Duvida:</strong> Apresenta a função de todos os mecanismos da página</li>
+            <button class="bg-sky-700 hover:bg-sky-950 text-white py-3 px-5 rounded-lg text-md font-semibold transition border-none cursor-default" id="question"><i class="fa-solid fa-question" aria-hidden="true"></i>
+            </button>
+          </ul>
+
+          <br>
+          <br>
+
+          <h2 class="text-gray-700 font-bold text-2xl mb-4">
+            Menu principal
+          </h2>
+
+          <p class="text-gray-600 mb-4">O Menu principal apresenta as opções essenciais para o processo eleitoral tais como:
+            <ul>
+              <li class="text-gray-600 mb-4 text-left"><strong>Gerenciar Candidatos: </strong> Cadastro e visualização dos grêmios ou presidenciaiveis </li>
+              <button
+              class="w-full bg-green-500 text-white py-3 rounded-lg font-semibold text-lg cursor-default">
+              Gerenciar Candidatos
+              </button>
+              <li class="text-gray-600 mb-4 text-left"><strong>Gerenciar Eleitores: </strong> Cadastro, visualização e edição dos eleitores</li>
+              <button 
+              class="w-full bg-green-500 text-white py-3 rounded-lg font-semibold text-lg cursor-default">
+              Gerenciar Eleitores
+            </button>
+            <li class="text-gray-600 mb-4 text-left"><strong>Administração: </strong> Execução, edição e visualização de informações sensíveis, só é vísivel para usuários administradores</li>
+            </ul>
+            <button
+              class="w-full bg-yellow-500 text-white py-3 rounded-lg font-semibold text-lg cursor-default">
+              Administração
+            </button>
+            <li class="text-gray-600 mb-4 text-left"><strong>Iniciar Processo: </strong> Executa o processo de votação autorizando eleitores ao voto</li>
+            <button 
+              class="w-full bg-green-500 text-white py-3 rounded-lg font-semibold text-lg cursor-default">
+              Iniciar Processo
+            </button>
+
+            <br>
+            <br>
+            
+            <h2 class="text-gray-700 font-bold text-2xl mb-4 ">
+              Menu de Candidatos
+            </h2>
+
+            <p class="text-gray-600 mb-4">O Menu de gerenciamento dos candidatos apresenta ferramentas para administrar o fluxo de grêmios e presidenciáveis 
+              tais como:
+             <ul>
+               <li class="text-gray-600 mb-4 text-left"><strong>Cadastrar nova chapa: </strong> Inseri um novo candidato para a eleição </li>
+               <button
+               class="w-full bg-green-500 text-white py-3 rounded-lg font-semibold text-lg cursor-default">
+               Cadastrar nova chapa
+               </button>
+               <li class="text-gray-600 mb-4 text-left"><strong>Exibir todos os candidatos: </strong> Lista todos os candidatos existentes com a possiblidade de edição e remoção</li>
+               <button 
+               class="w-full bg-green-500 text-white py-3 rounded-lg font-semibold text-lg cursor-default">
+               Exibir todos os candidatos
+             </button>
+           </p>
+
+           <br>
+           <br>
+
+           
+            <h2 class="text-gray-700 font-bold text-2xl mb-4">
+              Cadastro de Chapas
+            </h2>
+
+            <p class="text-gray-600 mb-4">O Cadastro de Candidatos possíbilita a inserção de candatos ou grêmios para a eleição 
+              <ul>
+                <li class="text-gray-600 mb-4 text-left"><strong>Digite o número: </strong> Inserção do número do presidenciável que será utilizado no processo eleitoral  </li>
+                <input
+                    placeholder="Digite o número"
+                    class="mt-1 p-2 border rounded w-full text-gray-700 h-10"
+                    oninput="this.value = this.value.slice(0, 2)"
+                    readonly
+                  />
+                <li class="text-gray-600 mb-4 text-left"><strong>Digite o nome: </strong> Inserção do nome do candidato que será exibido ao eleitor após introdução do número no processo eleitoral</li>
+                <input
+                    placeholder="Digite o nome"
+                    class="mt-1 p-2 border rounded w-full text-gray-700 h-10 uppercase"
+                    oninput="this.value = this.value.toUpperCase()"
+                    readonly
+                  />
+                  <li class="text-gray-600 mb-4 text-left"><strong>Foto do Candidato: </strong> Inserção da imagem que representa o presidenciável e que será exibida no processo eleitoral</li>
+                  <input
+                  placeholder="Escolher o arquivo"
+                    class="mt-1 p-2 border rounded w-full text-gray-700 h-10"
+                    readonly
+                  />
+                  <li class="text-gray-600 mb-4 text-left"><strong>Cadastrar: </strong> Inseri o presidenciável para concorrer as eleições</li>
+                  <button
+                  class="w-full bg-green-500 text-white py-3 rounded-lg font-semibold text-lg cursor-default"
+              >
+                <i class="fa-solid fa-user-plus"></i> Cadastrar
+              </button>
+            </p>
+
+            <br>
+            <br>
+
+            <h2 class="text-gray-700 font-bold text-2xl mb-4">
+              Gerenciador de Chapas
+            </h2>
+
+            <p class="text-gray-600 mb-4">O Gerenciador de Candidatos possíbilita a visualização e edição desses objetos 
+              <ul>
+                <li class="text-gray-600 mb-4 text-left"><strong>Digite o Nome: </strong> Pesquisa e exibe o candidato por meio do nome </li>
+                <input
+                  type="search"
+                  class="searchInput h-10 border border-gray-400 p-2 text-gray-700 rounded-l-lg"
+                  id="searchInput"
+                  placeholder="Digite o nome"
+                  readonly
+                />
+                <button
+                class="azul hover:bg-blue-600 text-white py-2 px-4 rounded-r-lg cursor-default"
+                id="searchButton"
+                title="Consultar chapa ou candidato"
+              ><i class="fa-solid fa-magnifying-glass"></i></button>
+                <li class="text-gray-600 mb-4 text-left"><strong>Deletar Candato: </strong> O ícone de lixeira deleta o candidato individualmente: <button class="delete-btn cursor-default">
+                  <i class="fa-solid fa-trash-can "></i>
+                </button> </li>
+                  <li class="text-gray-600 mb-4 text-left"><strong>Editar Candidato: </strong> O ícone do lapís permite alterações no candato: </button>
+                    <button class="edit-btn cursor-default"><i class="fas fa-edit"></i>
+                                    </button></li>
+                  <li class="text-gray-600 mb-4 text-left"><strong>Deletar Todos: </strong> Deleta todos os candatos existentes</li>
+                  <button
+                class="bg-red-500 text-white py-2 px-4 rounded-lg font-semibold text-lg transition cursor-default"
+              >
+                <i class="fa-solid fa-trash-can"></i> Deletar todos
+              </button>
+  
+              <br>
+              <br>
+
+            <h2 class="text-gray-700 font-bold text-2xl mb-4">
+                Menu de Eleitores
+              </h2>
+            <p class="text-gray-600 mb-4">O Menu de gerenciamento dos eletores apresenta ferramentas para administrar o eleitorado tais como:
+               <ul>
+                 <li class="text-gray-600 mb-4 text-left"><strong>Adicionar eleitor: </strong> Inseri um novo eleitor </li>
+                 <button
+                 class="w-full bg-green-500 text-white py-3 rounded-lg font-semibold text-lg cursor-default">
+                 Adicionar eleitor
+                 </button>
+                 <li class="text-gray-600 mb-4 text-left"><strong>Exibir todos os eleitores: </strong> Lista todos os eleitores existentes com a possiblidade de edição e remoção</li>
+                 <button 
+                 class="w-full bg-green-500 text-white py-3 rounded-lg font-semibold text-lg cursor-default">
+                 Exibir todos os eleitores
+               </button>
+             </p>
+          </p>
+
+          <br>
+              <br>
+
+              <h2 class="text-gray-700 font-bold text-2xl mb-4">
+                Cadastro de Eleitores
+              </h2>
+              <p class="text-gray-600 mb-4">O Cadastro de Eleitores possíbilita a inserção dos candidatos para votar na eleição 
+                <ul>
+                  <li class="text-gray-600 mb-4 text-left"><strong>Classe: </strong> Inserção do número e letra correspondente a classe dos eleitores</li>
+                  <input
+                      placeholder="(ex: 5F)"
+                      class="mt-1 p-2 border rounded w-full text-gray-700 h-10"
+                      oninput="this.value = this.value.slice(0, 2)"
+                      readonly
+                    />
+                  <li class="text-gray-600 mb-4 text-left"><strong>Números (um por linha): </strong> Cada linha do campo representa o numero de um aluno na chamada</li>
+                  <input
+                      placeholder="Digite um número por linha"
+                      class="mt-1 p-2 border rounded w-full text-gray-700 h-10"
+                      oninput="this.value = this.value.toUpperCase()"
+                      readonly
+                    />
+                    <li class="text-gray-600 mb-4 text-left"><strong>Nomes (um por linha): </strong> Cada linha do campo representa o nome de um aluno</li>
+                    <input
+                    placeholder="Digite um nome por linha"
+                      class="mt-1 p-2 border rounded w-full text-gray-700 h-10"
+                      readonly
+                    />
+                    <li class="text-gray-600 mb-4 text-left"><strong>Cadastrar: </strong> Cria um RA para a lista de alunos possibilitando e credenciando de um voto por pessoa</li>
+                    <button
+                    class="w-full bg-green-500 text-white py-3 rounded-lg font-semibold text-lg cursor-default"
+                >
+                  <i class="fa-solid fa-user-plus"></i> Cadastrar
+                </button>
+              </p>
+              <br>
+              <br>
+
+
+            <h2 class="text-gray-700 font-bold text-2xl mb-4">
+                Gerenciador de Eleitores
+              </h2>
+              <p class="text-gray-600 mb-4">O Gerenciador de Eleitores possíbilita a visualização e edição desses objetos 
+              <ul>
+                <li class="text-gray-600 mb-4 text-left"><strong>Digite o Nome: </strong> Pesquisa e exibe o eleitor por meio do nome </li>
+                <input
+                  type="search"
+                  class="searchInput h-10 border border-gray-400 p-2 text-gray-700 rounded-l-lg"
+                  id="searchInput"
+                  placeholder="Digite o nome"
+                  readonly
+                />
+                <button
+                class="azul hover:bg-blue-600 text-white py-2 px-4 rounded-r-lg cursor-default"
+                id="searchButton"
+                title="Consultar chapa ou candidato"
+              ><i class="fa-solid fa-magnifying-glass"></i></button>
+                <li class="text-gray-600 mb-4 text-left"><strong>Selecionar eleitor: </strong> O ícone de seleção armaza o item para uma possível remoção posterior: <button class="select-button text-gray-600 cursor-default" >
+                  <i class="fa-solid fa-circle"></i>
+                </button> </li>
+                <li class="text-gray-600 mb-4 text-left"><strong>Deletar eleitor: </strong> O ícone de lixeira deleta o eleitor individualmente: <button class="delete-btn cursor-default">
+                  <i class="fa-solid fa-trash-can "></i>
+                </button> </li>
+                  <li class="text-gray-600 mb-4 text-left"><strong>Editar eleitor: </strong> O ícone do lapís permite alterações no eleitor: </button>
+                    <button class="edit-btn cursor-default"><i class="fas fa-edit"></i></button></li>
+                  <li class="text-gray-600 mb-4 text-left"><strong>Excluir Selecionados: </strong> Remove apenas os eleitores marcados pelo icone de seleção: <button class="select-button text-gray-600 cursor-default" >
+                    <i class="fa-solid fa-circle"></i>
+                  </button></li>
+                  <button
+                class="bg-red-500 text-white py-2 px-4 rounded-lg font-semibold text-lg transition cursor-default"
+              >
+                <i class="fa-solid fa-trash-can"></i> Excluir Selecionados
+              </button>
+                  <li class="text-gray-600 mb-4 text-left"><strong>Deletar Todos: </strong> Deleta todos os eleitores existentes</li>
+                  <button
+                class="bg-red-500 text-white py-2 px-4 rounded-lg font-semibold text-lg transition cursor-default"
+              >
+                <i class="fa-solid fa-trash-can"></i> Deletar todos
+              </button>
+            </p>
+
+            <br>
+            <br>
+
+            <h2 class="text-gray-700 font-bold text-2xl mb-4">
+                Menu Administrativo
+              </h2>
+            <p class="text-gray-600 mb-4">O Menu do administrador apresenta ferramentas para edição e visualização de dados sensíveis
+              tais como:
+             <ul>
+               <li class="text-gray-600 mb-4 text-left"><strong>Apuração dos votos: </strong> Mostra o resultado do processo eleitoral </li>
+               <button
+               class="w-full bg-green-500 text-white py-3 rounded-lg font-semibold text-lg cursor-default">
+               Apuração dos votos
+               </button>
+               <li class="text-gray-600 mb-4 text-left"><strong>Alteração de senhas: </strong> Altera a senha dos mesários</li>
+               <button 
+               class="w-full bg-green-500 text-white py-3 rounded-lg font-semibold text-lg cursor-default">
+               Alteração de senhas
+             </button>
+             <li class="text-gray-600 mb-4 text-left"><strong>Apagar todos os dados: </strong> Apaga todos os votos, candidatos e eleitores voltando o sistema em seu estado original</li>
+             <button
+             class="bg-red-500  text-white py-3 rounded-lg font-semibold text-lg transition w-full my-4 cursor-default"> 
+             Apagar Todos os Dados
+             <i class="fa-solid fa-trash-can ml-1"></i>
+         </button>
+           </p>
+
+           <br>
+           <br>
+           <h2 class="text-gray-700 font-bold text-2xl mb-4">
+            Apuração dos votos
+          </h2>
+           <p class="text-gray-600 mb-4"> A contagem de votos exibe o resultado eleitoral
+            <ul>
+              <li class="text-gray-600 mb-4 text-left"><strong>Encerrar Processo: </strong> Apaga <strong>todos</strong> os votos</li>
+              <button
+              class="bg-yellow-500 hover:bg-yellow-600 text-white py-2 px-4 rounded-lg font-semibold text-lg transition cursor-default">
+              <i class="fa-solid fa-rectangle-xmark mr-2"></i>Encerrar Processo
+              </button>
+          </p>
+
+          <br>
+          <br>
+          
+          <h2 class="text-gray-700 font-bold text-2xl mb-4">
+            Alteração de senhas
+          </h2>
+
+          <li class="text-gray-600 mb-4 text-left"><strong>Selecione o tipo de usuário: </strong> Seleciona o mesario ou administrador para alteração de senha</li>
+                <input
+                    placeholder="Selecione o tipo de usuário"
+                    class="mt-1 p-2 border rounded w-full text-gray-700 h-10"
+                    readonly
+                  />
+                  <li class="text-gray-600 mb-4 text-left"><strong>Digite a nova senha: </strong> Campo de inserção de senha</li>
+                  <input
+                  placeholder="Digite a nova senha"
+                    class="mt-1 p-2 border rounded w-full text-gray-700 h-10"
+                    readonly
+                  />
+
+                  <li class="text-gray-600 mb-4 text-left"><strong>Repita a nova senha: </strong> Campo para validar a senha</li>
+                  <input
+                  placeholder="Repita a nova senha"
+                    class="mt-1 p-2 border rounded w-full text-gray-700 h-10"
+                    readonly
+                  />
+
+                  <li class="text-gray-600 mb-4 text-left"><strong>Salvar: </strong> Efetua a alteração</li>
+                  <button
+          class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-lg font-semibold text-lg transition w-1/2 mr-2 cursor-default"
+          id="salvar" title="salvar">
+          <i class="fa-solid fa-floppy-disk"></i> Salvar
+        </button>
+
+          <br>
+          <br>
+
+          <h2 class="text-gray-700 font-bold text-2xl mb-4">
+            Liberação de votos
+          </h2>
+
+          <p class="text-gray-600 mb-4">O Menu de liberação permite que os eleitores exerçam seu direito ao voto 
+            <ul>
+              <li class="text-gray-600 mb-4 text-left"><strong>Campo de busca: </strong> Permite pesquisar o eleitor por RA, Nome ou Classe </li>
+              <div class="flex items-center w-full max-w-md">
+                <div class="relative w-full">
+                  <!-- Select para escolher RA, Nome ou Classe -->
+                  <select id="searchOption" class="absolute left-0 top-0 z-10 w-1/4 h-full pl-3 bg-transparent outline-none border-none rounded-l-lg cursor-default">
+                    <option value="ra">RA</option>
+                    <option value="nome">Nome</option>
+                    <option value="classe">Classe</option>
+                  </select>
+                  <!-- Input de busca -->
+                  <input type="search" name="ra" id="ra" placeholder="RA do eleitor" autofocus
+                    class="border- border-gray-300 rounded-r-lg pl-12 p-3 w-full text-center text-gray-700 h-10 uppercase cursor-default" 
+                    readonly/>
+                </div>
+                <button
+                  class="azul text-white p-3 rounded-r-lg hover:bg-blue-700 transition h-10 flex items-center justify-center"
+                  title="Consultar eleitor">
+                  <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+              </div>
+              <li class="text-gray-600 mb-4 text-left"><strong>Liberar Voto: </strong> Permite que o eleitor vote, caso o mesmo já tenha votado aparecera a mensagem:"Eleitor já votou!"</li>
+              <button 
+              class="w-full bg-green-500 text-white py-3 rounded-lg font-semibold text-lg cursor-default">
+              Liberar Voto
+            </button>
+          </p>
+        </div>
+
+  
+
+  </div>
+
+  <script src="mainMesario.js"></script>
+</body>
+
+
+
+</html>
