@@ -2191,3 +2191,36 @@ body.dark-theme {
 .dark-theme .bg-white {
   background-color: #0e1015;
 }
+
+.icon-rotate {
+  transform: scaleX(-1);
+}
+
+.white-text-imp {
+  color: white !important;
+}
+
+.dark-mode .white-text-imp {
+  color: white !important;
+}
+
+/* barra de rolagem menu de ajuda*/
+#helpPopup .bg-white {
+  overflow-y: auto;  
+  max-height: 70vh; 
+}
+
+#helpPopup .bg-white::-webkit-scrollbar {
+  width: 8px; 
+}
+
+#helpPopup .bg-white::-webkit-scrollbar-thumb {
+  background-color: #5a5a5a;
+  border-radius: 10px;
+  transition: background-color 0.3s ease;
+}
+
+#helpPopup .bg-white::-webkit-scrollbar-thumb:hover {
+  background-color: #5a5a5a;
+}
+
