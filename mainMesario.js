@@ -240,3 +240,7 @@ function closeAdminPopup() {
   const popup = document.getElementById('adminPopup');
   if (popup) popup.classList.add('hidden');
 }
+
+module.exports = {
+  darkMode: 'class' 
+};
