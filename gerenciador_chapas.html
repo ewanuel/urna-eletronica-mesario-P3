@@ -18,6 +18,10 @@
         overflow-y: auto;
       }
 
+      .edit-input {
+        color: black !important; /* Força a cor do texto a ser preta */
+      }
+
       .edit-btn,
       .delete-btn {
         background: none;
@@ -166,7 +170,7 @@
             <input
               type="text"
               id="editChapa"
-              class="border border-gray-300 rounded w-full p-2 mb-3 text-black"
+              class="edit-input border h-8 border-gray-300 rounded w-full p-2 mb-3 text-black"
               style="background-color: #dfdfdf;"
               maxlength="2"
             />
@@ -176,8 +180,9 @@
             <input
               type="text"
               id="editNome"
-              class="border border-gray-300 rounded w-full p-2 mb-3 text-black"
+              class="edit-input border h-8 border-gray-300 rounded w-full p-2 mb-3 text-black"
               style="background-color: #dfdfdf; text-transform: uppercase;"
+              oninput="this.value = this.value.replace(/[^A-Za-zÀ-ú\s]/g, '');"
             />
 
             <label class="block text-gray-700 text-sm font-bold mb-2"
@@ -193,7 +198,7 @@
             <input
               type="file"
               id="editFoto"
-              class="border border-gray-300 rounded w-full p-2 mb-3 text-black"
+              class="border h-10 border-gray-300 rounded w-full p-2 mb-3 text-black"
               onchange="previewImagem()"
               style="background-color: #dfdfdf;"
             />

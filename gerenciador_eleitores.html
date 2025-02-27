@@ -19,6 +19,10 @@
         width: 700px;
       }
 
+      .edit-input {
+        color: black !important; /* Força a cor do texto a ser preta */
+      }
+
       .shadow-custom {
         box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
       }
@@ -120,7 +124,7 @@
           </button>
         </div>
         <div class="buscar mt-4 justify-center flex items-center">
-          <select id="searchType" class="h-7 w-20 border border-gray-400 rounded px-1 text-gray-700 bg-white text-xs m-2">
+          <select id="searchType" class="h-8 w-20 border border-gray-400 rounded py-1 px-3 text-gray-700 bg-white text-xs m-6">
             <option value="nome">Nome</option>
             <option value="ra">R.A</option>
             <option value="classe">Classe</option>
@@ -128,7 +132,7 @@
         
           <input
             type="search"
-            class="searchInput h-7 w-40 border border-gray-400 rounded px-2 text-gray-700 text-xs placeholder-gray-500 mt-6 mb-6"
+            class="searchInput h-8 w-40 border border-gray-400 rounded px-2 text-gray-700 text-xs placeholder-gray-500 mt-6 mb-6"
             id="searchInput"
             placeholder="Digite aqui"
           />
@@ -193,9 +197,9 @@
             <input
               type="text"
               id="editRa"
-              class="border border-gray-300 rounded w-full p-2 mb-3 text-black"
+              class="edit-input border h-8 border-gray-300 rounded w-full p-2 mb-3 text-black"
               maxlength="4"
-              style="background-color: #dfdfdf;"
+              style="background-color: #dfdfdf; text-transform: uppercase;"
             />
             <label class="block text-gray-700 text-sm font-bold mb-2"
               >Nome:</label
@@ -203,8 +207,9 @@
             <input
               type="text"
               id="editNome"
-              class="border border-gray-700 rounded w-full p-2 mb-3 text-black "
-              style="text-transform: uppercase; background-color: #dfdfdf;"
+              class="edit-input border h-8 border-gray-700 rounded w-full p-2 mb-3 text-black"
+              style="text-transform: uppercase; background-color: #dfdfdf; text-transform: uppercase;"
+              oninput="this.value = this.value.replace(/[^A-Za-zÀ-ú\s]/g, '');"
             />
 
             <div
