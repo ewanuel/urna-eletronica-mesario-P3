@@ -124,19 +124,18 @@
           </button>
         </div>
         <div class="buscar mt-4 justify-center flex items-center">
-          <select id="searchType" class="h-8 w-20 border border-gray-400 rounded py-1 px-3 text-gray-700 bg-white text-xs m-6">
-            <option value="nome">Nome</option>
-            <option value="ra">R.A</option>
-            <option value="classe">Classe</option>
-          </select>
-        
           <input
-            type="search"
-            class="searchInput h-8 w-40 border border-gray-400 rounded px-2 text-gray-700 text-xs placeholder-gray-500 mt-6 mb-6"
-            id="searchInput"
-            placeholder="Digite aqui"
+            type="text"
+            class="searchInput h-8 w-24 border border-gray-400 rounded px-2 text-gray-700 text-xs placeholder-gray-500 mt-6 mb-6 mr-4"
+            id="searchRa"
+            placeholder="Digite o RA"
           />
-        
+          <input
+            type="text"
+            class="searchInput h-8 w-40 border border-gray-400 rounded px-2 text-gray-700 text-xs placeholder-gray-500 mt-6 mb-6"
+            id="searchNome"
+            placeholder="Digite o nome"
+          />
           <button
             class="azul hover:bg-blue-600 text-white py-1 px-3 rounded"
             id="searchButton"
@@ -191,44 +190,47 @@
       >
         <div class="bg-white rounded-lg p-6 shadow-lg w-96">
           <h2 class="text-gray-700 text-lg font-bold mb-4">Editar Eleitor</h2>
-          
-            <input type="hidden" id="editId" />
-            <label class="block text-gray-700 text-sm font-bold mb-2">RA:</label>
-            <input
-              type="text"
-              id="editRa"
-              class="edit-input border h-8 border-gray-300 rounded w-full p-2 mb-3 text-black"
-              maxlength="4"
-              style="background-color: #dfdfdf; text-transform: uppercase;"
-            />
-            <label class="block text-gray-700 text-sm font-bold mb-2"
-              >Nome:</label
-            >
-            <input
-              type="text"
-              id="editNome"
-              class="edit-input border h-8 border-gray-700 rounded w-full p-2 mb-3 text-black"
-              style="text-transform: uppercase; background-color: #dfdfdf; text-transform: uppercase;"
-              oninput="this.value = this.value.replace(/[^A-Za-zÀ-ú\s]/g, '');"
-            />
+            <div id="trap-container">
+              <input type="hidden" id="editId" />
+              <label class="block text-gray-700 text-sm font-bold mb-2">RA:</label>
+              <input
+                type="text"
+                id="editRa"
+                class="edit-input border h-8 border-gray-300 rounded w-full p-2 mb-3 text-black"
+                maxlength="4"
+                style="background-color: #dfdfdf; text-transform: uppercase;"
+                autofocus
+              />
+              <label class="block text-gray-700 text-sm font-bold mb-2"
+                >Nome:</label
+              >
+              <input
+                type="text"
+                id="editNome"
+                class="edit-input border h-8 border-gray-700 rounded w-full p-2 mb-3 text-black"
+                style="text-transform: uppercase; background-color: #dfdfdf; text-transform: uppercase;"
+                oninput="this.value = this.value.replace(/[^A-Za-zÀ-ú\s]/g, '');"
+              />
 
-            <div
-              id="error-message"
-              class="hidden text-red-500 text-sm mb-4"
-            ></div>
-            <div class="flex justify-between mt-4">
-              <button
-                onclick="fecharPopup()"
-                class="bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded"
-              >
-                Cancelar
-              </button>
-              <button
-                onclick="salvarEdicao()"
-                class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded"
-              >
-                Salvar
-              </button>
+              <div
+                id="error-message"
+                class="hidden text-red-500 text-sm mb-4"
+              ></div>
+              <div class="flex justify-between mt-4">
+                <button
+                  onclick="fecharPopup()"
+                  class="bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded"
+                >
+                  Cancelar
+                </button>
+                <button
+                  onclick="salvarEdicao()"
+                  class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded"
+                >
+                  Salvar
+                </button>
+              </div>
+            </div>   
           </div>
         </div>
       </div>
@@ -429,36 +431,84 @@
       }
 
       function buscarEleitores() {
-        const searchTerm = document.getElementById("searchInput").value.trim().toLowerCase();
-        const searchType = document.getElementById("searchType").value; 
-        const eleitores = document.querySelectorAll(".eleitor-card");
+        const ra = document.getElementById("searchRa").value.trim().toLowerCase();
+        const nome = document.getElementById("searchNome").value.trim().toLowerCase();
 
-        eleitores.forEach((eleitor) => {
-          const ra = eleitor.querySelector("p:nth-child(2)").textContent.toLowerCase().replace("ra:", "").trim();
-          const nome = eleitor.querySelector("p:nth-child(3)").textContent.toLowerCase().replace("nome:", "").trim();
-          const classe = eleitor.querySelector("p:nth-child(1)").textContent.toLowerCase().replace("classe:", "").trim();
+        let url = `${BaseUrl}/eleitor?`;
 
-          let match = false;
+        if (ra && nome) {
+          url += `ra=${ra}&nome=${nome}`;
+        } else if (ra) {
+          url += `ra=${ra}`;
+        } else if (nome) {
+          url += `nome=${nome}`;
+        } else {
+          // Se nenhum campo estiver preenchido, carrega todos os eleitores
+          carregarEleitores();
+          return;
+        }
 
-          switch (searchType) {
-            case "ra":
-              match = ra.includes(searchTerm); 
-              break;
-            case "nome":
-              match = nome.includes(searchTerm);
-              break;
-            case "classe":
-              match = classe.includes(searchTerm); 
-              break;
-            default:
-              match = true;
+        fetch(url)
+          .then((response) => response.json())
+          .then((data) => {
+            const eleitoresDiv = document.getElementById("eleitores");
+            const semEleitoresDiv = document.getElementById("semEleitores");
+
+            eleitoresDiv.innerHTML = "";
+
+            if (data.length === 0) {
+              semEleitoresDiv.style.display = "flex";
+              eleitoresDiv.style.display = "none";
+              document.getElementById("btnRemover").style.display = "none";
+            } else {
+              semEleitoresDiv.style.display = "none";
+              eleitoresDiv.style.display = "grid";
+
+              data.forEach((eleitor) => {
+                const eleitorDiv = document.createElement("div");
+                eleitorDiv.classList.add(
+                  "card",
+                  "bg-white",
+                  "border",
+                  "border-gray-300",
+                  "rounded-lg",
+                  "p-4",
+                  "shadow",
+                  "eleitor-card"
+                );
+                eleitorDiv.setAttribute("data-ra", eleitor.ra);
+
+                eleitorDiv.innerHTML = `
+                  <div class="info-eleitor text-gray-700 text-center">
+                    <p><strong>Classe:</strong> ${eleitor.ra.substring(0, 2)}</p>
+                    <p><strong>RA:</strong> ${eleitor.ra}</p>
+                    <p><strong>Nome:</strong> ${eleitor.nome}</p>
+                  </div>
+                  <div class="card-actions">
+                    <button class="select-button text-gray-600" onclick="toggleSelect('${
+                      eleitor.ra
+                    }', this)">
+                      <i class="fa-solid fa-circle"></i>
+                    </button>
+                    <button class="delete-button" onclick="excluirEleitor('${
+                      eleitor.ra
+                    }')">
+                      <i class="text-red-500 fa-solid fa-trash-can"></i>
+                    </button>
+                    <button class="edit-btn" onclick="abrirPopup('${
+                      eleitor.ra
+                    }', '${eleitor.nome}', '${eleitor.id}')">
+                      <i class="fas fa-edit"></i>
+                    </button>
+                  </div>
+                `;
+
+              eleitoresDiv.appendChild(eleitorDiv);
+            });
           }
-
-          if (match) {
-            eleitor.style.display = "flex";
-          } else {
-            eleitor.style.display = "none";
-          }
+        })
+        .catch((error) => {
+          console.error("Erro ao buscar eleitores:", error);
         });
       }
 
@@ -487,6 +537,8 @@
         document.getElementById("editNome").value = nome;
 
         document.getElementById("editPopup").classList.remove("hidden");
+
+        document.getElementById("editRa").focus();
       }
 
       function fecharPopup() {

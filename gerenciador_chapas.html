@@ -164,62 +164,59 @@
 
             <input type="hidden" id="editId" />
 
-            <label class="block text-gray-700 text-sm font-bold mb-2"
-              >Chapa:</label
-            >
-            <input
-              type="text"
-              id="editChapa"
-              class="edit-input border h-8 border-gray-300 rounded w-full p-2 mb-3 text-black"
-              style="background-color: #dfdfdf;"
-              maxlength="2"
-            />
-            <label class="block text-gray-700 text-sm font-bold mb-2"
-              >Nome:</label
-            >
-            <input
-              type="text"
-              id="editNome"
-              class="edit-input border h-8 border-gray-300 rounded w-full p-2 mb-3 text-black"
-              style="background-color: #dfdfdf; text-transform: uppercase;"
-              oninput="this.value = this.value.replace(/[^A-Za-zÀ-ú\s]/g, '');"
-            />
+              <div id="trap-container">
+                <label class="block text-gray-700 text-sm font-bold mb-2">Chapa:</label>
+                <input
+                  type="text"
+                  id="editChapa"
+                  class="edit-input border h-8 border-gray-300 rounded w-full p-2 mb-3 text-black"
+                  style="background-color: #dfdfdf;"
+                  maxlength="2"
+                  autofocus
+                />
+                <label class="block text-gray-700 text-sm font-bold mb-2">Nome:</label>
+                <input
+                  type="text"
+                  id="editNome"
+                  class="edit-input border h-8 border-gray-300 rounded w-full p-2 mb-3 text-black"
+                  style="background-color: #dfdfdf; text-transform: uppercase;"
+                  oninput="this.value = this.value.replace(/[^A-Za-zÀ-ú\s]/g, '');"
+                />
+                <label class="block text-gray-700 text-sm font-bold mb-2">Foto:</label>
+                <div class="flex justify-center mb-4">
+                  <img
+                    id="editFotoPreview"
+                    class="w-24 h-24 rounded-full object-cover"
+                    alt="Preview da foto"
+                  />
+                </div>
+                <input
+                  type="file"
+                  id="editFoto"
+                  class="border h-10 border-gray-300 rounded w-full p-2 mb-3 text-black"
+                  onchange="previewImagem()"
+                  style="background-color: #dfdfdf;"
+                />
+              
 
-            <label class="block text-gray-700 text-sm font-bold mb-2"
-              >Foto:</label
-            >
-            <div class="flex justify-center mb-4">
-              <img
-                id="editFotoPreview"
-                class="w-24 h-24 rounded-full object-cover"
-                alt="Preview da foto"
-              />
-            </div>
-            <input
-              type="file"
-              id="editFoto"
-              class="border h-10 border-gray-300 rounded w-full p-2 mb-3 text-black"
-              onchange="previewImagem()"
-              style="background-color: #dfdfdf;"
-            />
-
-            <div
-              id="error-message"
-              class="hidden text-red-500 text-sm mb-4"
-            ></div>
-            <div class="flex justify-between mt-4">
-              <button
-                onclick="fecharPopup()"
-                class="bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded"
-              >
-                Cancelar
-              </button>
-              <button
-                onclick="salvarEdicao()"
-                class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded"
-              >
-                Salvar
-              </button>
+                <div
+                  id="error-message"
+                  class="hidden text-red-500 text-sm mb-4"
+                ></div>
+                <div class="flex justify-between mt-4">
+                  <button
+                    onclick="fecharPopup()"
+                    class="bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded"
+                  >
+                    Cancelar
+                  </button>
+                  <button
+                    onclick="salvarEdicao()"
+                    class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded"
+                  >
+                    Salvar
+                  </button>
+                </div>
             </div>
           </div>
         </div>
@@ -428,6 +425,9 @@
         }
 
         document.getElementById("editPopup").classList.remove("hidden");
+      
+
+        document.getElementById("editChapa").focus();
       }
 
       function fecharPopup() {
@@ -515,6 +515,7 @@
       }
 
       window.onload = carregarCandidatos;
+
     </script>
   </body>
 </html>
