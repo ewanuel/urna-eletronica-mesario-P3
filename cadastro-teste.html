@@ -20,7 +20,7 @@
         font-size: large;
         margin: 10px 0;
       }
-      
+
       #loadingOverlay {
         position: fixed;
         top: 0;
@@ -284,10 +284,21 @@
       function enviarDadosParaAPI(eleitores) {
         fetch(`${BaseUrl}/eleitor`, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
+          },
           body: JSON.stringify(eleitores),
         })
-          .then((response) => response.json())
+          .then((response) => {
+            console.log("Status da resposta:", response.status);
+            if (!response.ok) {
+              return response.text().then((text) => {
+                throw new Error(text);
+              });
+            }
+            return response.json();
+          })
           .then((result) => processarRespostaAPI(result))
           .catch((error) => {
             console.error("Erro:", error);
@@ -298,9 +309,9 @@
       function processarRespostaAPI(result) {
         exibirCarregamento(false);
 
-        console.log("Resposta da API:", result); // Log para depuração
+        console.log("Resposta da API:", result); 
 
-        const { registrados = [], naoRegistrados = [] } = result; // Ajustado para nova estrutura do backend
+        const { registrados = [], naoRegistrados = [] } = result; 
 
         console.log("Eleitores cadastrados:", registrados);
         console.log("Eleitores não cadastrados:", naoRegistrados);
