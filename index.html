@@ -12,7 +12,6 @@
     <script src="constantes.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-      /* Ajuste de estilo específico para o tamanho do texto */
       h2 {
         font-size: medium;
       }
@@ -47,14 +46,15 @@
       <div class="flex flex-col gap-4">
         <label class="flex items-center">
           <i class="fa-solid fa-user mr-2"></i>
-          <input
-            type="text"
-            name="usuario"
+          <select
             id="usuario"
-            placeholder="Digite o usuário"
-            required
+            name="usuario"
             class="mt-1 p-2 border rounded w-full text-gray-700 h-10"
-          />
+            required
+          >
+            <option value="mesario">Mesário</option>
+            <option value="administrador">Administrador</option>
+          </select>
         </label>
 
         <label class="flex items-center">
@@ -104,7 +104,10 @@
       });
 
       function login() {
-        const usuario = document.getElementById("usuario").value;
+        const usuario = document.getElementById("usuario").value; // Pega o valor do select (mesário ou administrador)
+        console.log(usuario);
+
+        // const usuario = document.getElementById("usuario").value;
         const senha = document.getElementById("senha").value;
 
         if (!usuario || !senha) {
@@ -120,7 +123,6 @@
 
         console.log("Tentando login com:", data);
         console.log("URL da requisição:", `${BaseUrl}/auth/login`);
-
 
         fetch(`${BaseUrl}/auth/login`, {
           method: "POST",
