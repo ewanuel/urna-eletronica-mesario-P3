@@ -30,8 +30,9 @@ function iniciarProcesso() {
 }
 
 function hubSair() {
-  document.getElementById("hubSair");
-  location.href = "index.html";
+  localStorage.removeItem("accessToken");
+  console.log(localStorage.getItem("accessToken")); 
+  window.location.href = "index.html";
 }
 
 function Adm() {
