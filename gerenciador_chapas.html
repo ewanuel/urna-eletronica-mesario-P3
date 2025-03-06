@@ -280,7 +280,13 @@
       });
 
       function carregarCandidatos() {
-        fetch(`${BaseUrl}/candidato`)
+        fetch(`${BaseUrl}/candidato`, 
+        {          
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
+          },
+        })
           .then((response) => response.json())
           .then((data) => {
             const candidatosDiv = document.getElementById("candidatos");
@@ -373,7 +379,8 @@
       function excluirCandidato(chapa) {
         if (confirm("Tem certeza que deseja excluir este candidato?")) {
           fetch(`${BaseUrl}/candidato/${chapa}`, {
-            method: "DELETE",
+            method: "DELETE", headers: {"Authorization": `Bearer ${localStorage.getItem("accessToken")}`}
+            
           })
             .then((response) => {
               if (response.ok) {
@@ -392,7 +399,9 @@
       function deletarTodosCandidatos() {
         if (confirm("Tem certeza que deseja excluir todos os candidatos?")) {
           fetch(`${BaseUrl}/candidato`, {
-            method: "DELETE",
+            method: "DELETE", headers: {"Authorization": `Bearer ${localStorage.getItem("accessToken")}`}
+
+            
           })
             .then((response) => {
               if (response.ok) {
@@ -494,6 +503,7 @@
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
+            "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
           },
           body: JSON.stringify(dadosCandidato),
         })
