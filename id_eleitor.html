@@ -154,7 +154,10 @@ function buscarEleitores() {
     const classe = pesquisa.slice(0, 2);  
     url += classe;  
   }  
-  fetch(url)
+  fetch(url, {            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
+            },})
     .then((response) => {
       if (!response.ok) {
         throw new Error("Erro na requisição");
@@ -202,6 +205,8 @@ function buscarEleitores() {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
+
           },
           body: data,
         })
