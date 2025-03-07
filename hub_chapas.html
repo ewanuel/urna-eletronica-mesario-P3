@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hub dos Candidatos</title>
+  <link rel="stylesheet" href="styleMesario.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://kit.fontawesome.com/877e197de7.js" crossorigin="anonymous"></script>
+  <style>
+    /* Adiciona uma sombra suave */
+    .shadow-custom {
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Estilos para o modo escuro */
+    .dark-theme {
+      background-color: #1a1a1a;
+      color: #f5f5f5;
+    }
+
+    .dark-theme .bg-gray-100 {
+      background-color: #333;
+    }
+
+    .dark-theme .bg-gray-300 {
+      background-color: #444;
+    }
+
+    .dark-theme .text-gray-700 {
+      color: #e0e0e0;
+    }
+
+    .dark-theme .text-gray-600 {
+      color: #c0c0c0;
+    }
+
+    .dark-theme .bg-red-500 {
+      background-color: #d62828;
+    }
+  </style>
+</head>
+
+<body class="bg-gray-100 flex items-center justify-center h-screen">
+  <nav>
+    <i class="fa-solid fa-bars" onclick="toggleMenu()"></i>
+    <div class="nv_est" id="menuItems">
+      <a onclick="entrarManual()" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-lg text-md font-semibold transition white-text-imp cursor-pointer"title="Manual"><i class="fa-solid fa-book-open mr-2"></i>Manual</a>
+      <a href="hub.html">Home</a>
+      <a href="hub_chapas.html">Gerenciador de Candidatos</a>
+      <a href="hub_eleitor.html">Gerenciador de Eleitores</a>
+      <a onclick="AdmPopup()" class="w-full bg-yellow-500 hover:bg-yellow-600 cursor-pointer text-white py-2 px-4 rounded-lg text-md font-semibold transition white-text-imp"title="Sair do Sistema"><i class="fa-solid fa-lock mr-2"></i>Administração</a>
+      <a href="id_eleitor.html">Iniciar Processo</a>
+      <a href="index.html" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg text-md font-semibold transition white-text-imp"title="Sair do Sistema"><i class="fa-solid fa-right-from-bracket mr-2 icon-rotate"></i>Sair</a>
+    </div>
+  </nav>
+
+  <div class="container mx-auto p-4">
+
+    <!-- Div principal com sombra e arredondamento -->
+    <div class="bg-gray-300 rounded-lg shadow-custom p-10 max-w-2xl mx-auto relative">
+      <div class="text-center space-y-6">
+        <!-- Título e subtítulo da Gestão dos Candidatos -->
+        <div class="info">
+          <h1 class="text-gray-700 font-bold text-2xl">
+            Gestão dos Candidatos
+          </h1>
+          <h2 class="text-gray-600 font-medium text-lg mt-4">
+            Gerencie todas as informações relacionadas às chapas e candidatos
+            de forma rápida e simples. Escolha entre cadastrar novas chapas ou
+            gerenciar as já existentes.
+          </h2>
+        </div>
+
+        <!-- Botões principais da Gestão dos Candidatos -->
+        <div class="botoes flex flex-col items-center space-y-6 mt-6">
+          <button onclick="entrarCadastrarChapas()"
+            class="w-full bg-green-500 hover:bg-green-600 text-white py-3 rounded-lg font-semibold text-lg transition"
+            title="Cadastro de Chapa/Candidato">
+            Cadastrar nova chapa
+          </button>
+          <button onclick="entrarGerenciadorChapas()"
+            class="w-full bg-green-500 hover:bg-green-600 text-white py-3 rounded-lg font-semibold text-lg transition"
+            title="Listagem de Chapas/Candidatos">
+            Exibir todos os candidatos
+          </button>
+        </div>
+      </div>
+
+      <!-- Botão Voltar menor e à direita -->
+      <div class="absolute top-4 right-4">
+        <button onclick="voltarHub()"
+          class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-full text-md font-semibold transition"
+          title="Página anterior">
+          <i class="fa-solid fa-circle-chevron-left mr-2"></i> Voltar
+        </button>
+      </div>
+      <div class="absolute top-4 left-4">
+        <button onclick="toggleTheme()" id="md_es"
+          class="bg-gray-600 hover:bg-black text-white py-2 px-4 rounded-full text-md font-semibold transition"
+          title="Ativar modo escuro">
+          Modo Escuro
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="absolute top-4 right-4">
+    <button class="bg-sky-700 hover:bg-sky-950 text-white py-3 px-5 rounded-lg text-md font-semibold transition border-none" id="question" onclick="openPopup()"><i class="fa-solid fa-question"></i>
+    </button>
+  </div>
+
+  <div id="helpPopup" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+    <div class="bg-white rounded-lg p-8 max-w-md mx-auto shadow-custom">
+      <h3 class="text-gray-700 text-xl font-bold mb-4">Ajuda</h3>
+      <p class="text-gray-600 mb-4">O Menu de gerenciamento dos candidatos apresenta ferramentas para administrar o fluxo de grêmios e presidenciáveis 
+         tais como:
+        <ul>
+          <li class="text-gray-600 mb-4 text-left"><strong>Cadastrar nova chapa: </strong> Inseri um novo candidato para a eleição </li>
+          <button
+          class="w-full bg-green-500 text-white py-3 rounded-lg font-semibold text-lg cursor-default">
+          Cadastrar nova chapa
+          </button>
+          <li class="text-gray-600 mb-4 text-left"><strong>Exibir todos os candidatos: </strong> Lista todos os candidatos existentes com a possiblidade de edição e remoção</li>
+          <button 
+          class="w-full bg-green-500 text-white py-3 rounded-lg font-semibold text-lg cursor-default">
+          Exibir todos os candidatos
+        </button>
+      </p>
+      <br>
+      <button onclick="closePopup()" class="bg-sky-700 hover:bg-sky-950 text-white py-2 px-4 rounded-lg text-md font-semibold transition ml-float">Fechar</button>
+    </div>
+  </div>
+
+  <script src="mainMesario.js"></script>
+  <script>
+          function verificarAutenticacao() {
+        const token = localStorage.getItem("accessToken");
+        if (!token) {
+          window.location.href = "index.html";
+        }
+      }
+
+      verificarAutenticacao();
+  </script>
+</body>
+
+</html>

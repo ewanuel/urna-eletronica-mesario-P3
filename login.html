@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+    <script
+      src="https://kit.fontawesome.com/877e197de7.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      input::placeholder {
+        text-transform: none;
+      }
+    </style>
+  </head>
+
+  <body class="bg-gray-100 flex items-center justify-center h-screen">
+    <div class="container mx-auto p-4 w-full max-w-2xl">
+      <div class="bg-gray-300 rounded-lg shadow-lg p-12 w-[90%] relative">
+        <h1 class="text-gray-800 font-bold text-2xl mb-4 text-center">
+          Login - Urna Eletrônica
+        </h1>
+
+        <form class="flex flex-col space-y-4" id="cadastroForm">
+          <label class="flex flex-col">
+            <span class="text-gray-600">Usuário:</span>
+            <div class="flex items-center">
+              <i class="fa-solid fa-user mr-2 text-gray-700"></i>
+              <input
+                type="text"
+                id="user"
+                placeholder="Digite o tipo de usuário"
+                name="user"
+                class="mt-1 p-2 border rounded w-full text-gray-700 h-10 uppercase"
+              />
+            </div>
+          </label>
+
+          <label class="flex flex-col">
+            <span class="text-gray-600">Senha:</span>
+            <div class="flex items-center">
+              <i class="fa-solid fa-lock mr-2 text-gray-700"></i>
+              <input
+                type="password"
+                id="senha"
+                placeholder="Digite a senha"
+                name="senha"
+                class="mt-1 p-2 border rounded w-full text-gray-700 h-10"
+              />
+            </div>
+          </label>
+
+          <span class="text-red-500 text-center" id="mensagem"></span>
+
+          <button
+            type="submit"
+            class="bg-green-500 hover:bg-green-600 text-white py-2 rounded-lg font-semibold transition"
+            id="login"
+            title="Realizar Login"
+          >
+            <i class="fa-solid fa-user-plus"></i> Entrar
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

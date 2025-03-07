@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LogIn da Urna</title>
+    <script
+      src="https://kit.fontawesome.com/877e197de7.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="constantes.js"></script>
+    <link rel="stylesheet" href="styleMesario.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      .shadow-custom {
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      }
+    </style>
+  </head>
+
+  <body class="bg-gray-100 flex items-center justify-center h-screen">
+    <nav>
+      <i class="fa-solid fa-bars" onclick="toggleMenu()"></i>
+      <div class="nv_est" id="menuItems">
+        <a
+          onclick="entrarManual()"
+          class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-lg text-md font-semibold transition white-text-imp cursor-pointer"
+          title="Manual"
+          ><i class="fa-solid fa-book-open mr-2"></i>Manual</a
+        >
+        <a href="hub.html">Home</a>
+        <a href="hub_chapas.html">Gerenciador de Candidatos</a>
+        <a href="hub_eleitor.html">Gerenciador de Eleitores</a>
+        <a
+          onclick="AdmPopup()"
+          class="w-full bg-yellow-500 hover:bg-yellow-600 cursor-pointer text-white py-2 px-4 rounded-lg text-md font-semibold transition white-text-imp"
+          title="Sair do Sistema"
+          ><i class="fa-solid fa-lock mr-2"></i>Administração</a
+        >
+        <a href="id_eleitor.html">Iniciar Processo</a>
+        <a
+          href="index.html"
+          class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg text-md font-semibold transition white-text-imp"
+          title="Sair do Sistema"
+          ><i class="fa-solid fa-right-from-bracket mr-2 icon-rotate"></i
+          >Sair</a
+        >
+      </div>
+    </nav>
+
+    <div class="container mx-auto p-4">
+      <div
+        class="bg-gray-300 rounded-lg shadow-custom form-container flex flex-col items-center justify-center p-8 w-full max-w-lg relative"
+      >
+        <div class="absolute top-4 right-4">
+          <button
+            onclick="Adm()"
+            class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-full text-md font-semibold transition"
+            title="Página anterior"
+          >
+            <i class="fa-solid fa-circle-chevron-left mr-2"></i> Voltar
+          </button>
+        </div>
+        <div class="absolute top-4 left-4">
+          <button
+            onclick="toggleTheme()"
+            id="md_es"
+            class="bg-gray-600 hover:bg-black text-white py-2 px-4 rounded-full text-md font-semibold transition"
+            title="Ativar modo escuro"
+          >
+            Modo Escuro
+          </button>
+        </div>
+        <h1 class="text-gray-700 font-bold text-2xl text-center mt-4">
+          Trocar Senha
+        </h1>
+
+        <div class="w-full flex flex-col mb-4 space-y-4">
+          <label class="flex items-center w-full">
+            <i class="fa-solid fa-user mr-2 text-gray-700"></i>
+            <select
+              name="tip_urs"
+              required
+              id="tip_urs"
+              class="mt-1 w-full p-2 border rounded text-gray-700"
+            >
+              <option value="null" disabled selected>
+                Selecione o tipo de usuário
+              </option>
+              <option value="Mesario">Mesário</option>
+              <option value="Administrador">Administrador</option>
+              <option value="Eleitor">Eleitor</option>
+            </select>
+          </label>
+
+          <label class="flex items-center mb-4">
+            <i class="fa-solid fa-lock mr-2 text-gray-700"></i>
+            <input
+              type="password"
+              name="senha_alt"
+              min="1"
+              maxlength="6"
+              id="senha_alt"
+              placeholder="Digite a nova senha"
+              pattern="[0-9]*"
+              inputmode="numeric"
+              oninput="this.value = this.value.replace(/[^0-9]/g, '');"
+              required
+              class="mt-1 w-full p-2 border rounded text-gray-700 h-10"
+            />
+          </label>
+
+          <label class="flex items-center mb-4" for="senha_conf">
+            <i class="fa-solid fa-lock mr-2 text-gray-700"></i>
+            <input
+              type="password"
+              name="senha_conf"
+              min="1"
+              maxlength="6"
+              id="senha_conf"
+              placeholder="Repita a nova senha"
+              pattern="[0-9]*"
+              inputmode="numeric"
+              oninput="this.value = this.value.replace(/[^0-9]/g, '');"
+              required
+              class="text-gray-700 mt-1 w-full p-2 border rounded h-10"
+            />
+          </label>
+
+          <span
+            id="error-message"
+            class="error-message text-center text-red-500"
+          ></span>
+        </div>
+
+        <div class="flex justify-center w-full mt-4">
+          <button
+            class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-lg font-semibold text-lg transition w-1/2 mr-2"
+            id="salvar"
+            onclick="verificarSenhas()"
+            title="salvar"
+          >
+            <i class="fa-solid fa-floppy-disk"></i> Salvar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="absolute top-4 right-4">
+      <button
+        class="bg-sky-700 hover:bg-sky-950 text-white py-3 px-5 rounded-lg text-md font-semibold transition border-none"
+        id="question"
+        onclick="openPopup()"
+      >
+        <i class="fa-solid fa-question"></i>
+      </button>
+    </div>
+
+    <div
+      id="helpPopup"
+      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden"
+    >
+      <div class="bg-white rounded-lg p-8 max-w-md mx-auto shadow-custom">
+        <h3 class="text-gray-700 text-xl font-bold mb-4">Ajuda</h3>
+        <li class="text-gray-600 mb-4 text-left">
+          <strong>Selecione o tipo de usuário: </strong> Seleciona o mesario ou
+          administrador para alteração de senha
+        </li>
+        <input
+          placeholder="Selecione o tipo de usuário"
+          class="mt-1 p-2 border rounded w-full text-gray-700 h-10"
+          readonly
+        />
+        <li class="text-gray-600 mb-4 text-left">
+          <strong>Digite a nova senha: </strong> Campo de inserção de senha
+        </li>
+        <input
+          placeholder="Digite a nova senha"
+          class="mt-1 p-2 border rounded w-full text-gray-700 h-10"
+          readonly
+        />
+
+        <li class="text-gray-600 mb-4 text-left">
+          <strong>Repita a nova senha: </strong> Campo para validar a senha
+        </li>
+        <input
+          placeholder="Repita a nova senha"
+          class="mt-1 p-2 border rounded w-full text-gray-700 h-10"
+          readonly
+        />
+
+        <li class="text-gray-600 mb-4 text-left">
+          <strong>Salvar: </strong> Efetua a alteração
+        </li>
+        <button
+          class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-lg font-semibold text-lg transition w-1/2 mr-2 cursor-default"
+          id="salvar"
+          title="salvar"
+        >
+          <i class="fa-solid fa-floppy-disk"></i> Salvar
+        </button>
+
+        <button
+          onclick="closePopup()"
+          class="bg-sky-700 hover:bg-sky-950 text-white py-2 px-4 rounded-lg text-md font-semibold transition"
+        >
+          Fechar
+        </button>
+      </div>
+    </div>
+
+    <script>
+      function verificarAutenticacao() {
+        const token = localStorage.getItem("accessToken");
+        if (!token) {
+          window.location.href = "index.html";
+        }
+      }
+
+      verificarAutenticacao();
+
+      function verificarSenhas() {
+        const tipoUsuario = document.getElementById("tip_urs").value;
+        const senha = document.getElementById("senha_alt").value;
+        const confirmarSenha = document.getElementById("senha_conf").value;
+        const errorMessage = document.getElementById("error-message");
+
+        if (tipoUsuario === "null") {
+          errorMessage.textContent = "Por favor, selecione um tipo de usuário.";
+          return false;
+        }
+
+        if (!senha || !confirmarSenha) {
+          errorMessage.textContent =
+            "Por favor, preencha ambos os campos de senha.";
+          return false;
+        }
+
+        if (senha !== confirmarSenha) {
+          errorMessage.textContent =
+            "As senhas não coincidem. Tente novamente.";
+          return false;
+        } else {
+          errorMessage.textContent = "";
+          alert("Senha alterada com sucesso!");
+        }
+      }
+    </script>
+    <script src="mainMesario.js"></script>
+  </body>
+</html>

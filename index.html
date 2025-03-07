@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LogIn da Urna</title>
+    <link rel="stylesheet" href="styleMesario.css" />
+    <script
+      src="https://kit.fontawesome.com/877e197de7.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="constantes.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      /* Ajuste de estilo específico para o tamanho do texto */
+      h2 {
+        font-size: medium;
+      }
+
+      span {
+        font-size: small;
+      }
+
+      .shadow-custom {
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      }
+
+      i {
+        color: black;
+      }
+    </style>
+  </head>
+
+  <body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <div
+      class="bg-gray-300 shadow-lg shadow-custom rounded-lg p-8 w-full max-w-md relative"
+    >
+      <div class="flex justify-center">
+        <button
+          onclick="toggleTheme()"
+          id="md_es"
+          class="bg-gray-600 hover:bg-black text-white py-2 px-4 rounded-full text-md font-semibold transition"
+          title="Ativar modo escuro"
+        >
+          Modo Escuro
+        </button>
+      </div>
+      <div class="text-center mb-6">
+        <h1 class="text-2xl font-bold text-gray-700">
+          Sistema de Urna Eletrônica
+        </h1>
+        <h2 class="text-lg text-gray-600">
+          Insira suas credenciais para acessar e gerenciar votações.
+        </h2>
+      </div>
+
+      <div class="flex flex-col gap-4">
+        <label class="flex items-center">
+          <i class="fa-solid fa-user mr-2"></i>
+          <select
+            id="usuario"
+            name="usuario"
+            class="mt-1 p-2 border rounded w-full text-gray-700 h-10"
+            required
+          >
+            <option value="mesario">Mesário</option>
+            <option value="administrador">Administrador</option>
+          </select>
+          <!-- <input
+            type="text"
+            name="usuario"
+            id="usuario"
+            placeholder="Digite o usuário"
+            required
+            class="mt-1 p-2 border rounded w-full text-gray-700 h-10"
+          /> -->
+        </label>
+
+        <label class="flex items-center">
+          <i class="fa-solid fa-lock mr-2"></i>
+          <input
+            type="password"
+            name="senha"
+            id="senha"
+            placeholder="Digite a senha"
+            required
+            class="mt-1 p-2 border rounded w-full text-gray-700 h-10"
+          />
+        </label>
+
+        <p class="text-sm mt-2 text-center">
+          <a
+            href="#"
+            onclick="openResetPopup()"
+            class="text-blue-700 underline"
+          >
+            Deseja resetar sistema para configurações de fábrica?
+          </a>
+        </p>
+
+        <!-- Div para o popup -->
+        <div
+          id="resetPopup"
+          class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden"
+        >
+          <div class="bg-white rounded-lg p-6 max-w-md mx-auto shadow-lg">
+            <h3 class="text-gray-700 text-xl font-bold mb-4">
+              Confirmar Reset
+            </h3>
+            <p class="text-gray-600 mb-4">
+              Digite a senha para confirmar o reset do sistema:
+            </p>
+
+            <!-- Input de senha -->
+            <input
+              type="password"
+              id="resetPassword"
+              class="border rounded-lg p-2 w-full mb-4 text-black"
+              placeholder="Digite a senha"
+              autofocus
+            />
+
+            <!-- Mensagem de erro (inicialmente oculta) -->
+            <p id="resetError" class="text-red-500 text-sm hidden">
+              Senha incorreta!
+            </p>
+
+            <!-- Botões -->
+            <div class="flex justify-end gap-2">
+              <button
+                onclick="closeResetPopup()"
+                class="bg-gray-400 hover:bg-gray-500 text-white py-2 px-4 rounded-lg"
+              >
+                Cancelar
+              </button>
+              <button
+                onclick="confirmReset()"
+                class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg"
+              >
+                Resetar
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <span id="error-message" class="text-red-600 text-center"></span>
+        <button
+          class="bg-green-500 text-white py-2 rounded-lg font-semibold hover:bg-green-600 transition"
+          id="entrar"
+          onclick="login()"
+          title="Acessar conta"
+        >
+          Entrar
+        </button>
+      </div>
+    </div>
+
+    <script src="mainMesario.js"></script>
+    <script>
+      // Entrar ao clicar enter
+      var input = document.getElementById("senha");
+      input.addEventListener("keyup", function (event) {
+        if (event.keyCode === 13) {
+          event.preventDefault();
+          document.getElementById("entrar").click();
+        }
+      });
+      function openResetPopup() {
+        document.getElementById("resetPopup").classList.remove("hidden");
+        document.getElementById("resetError").classList.add("hidden"); // Esconde erro ao abrir
+        document.getElementById("resetPassword").value = ""; // Limpa campo
+      }
+
+      function closeResetPopup() {
+        document.getElementById("resetPopup").classList.add("hidden");
+      }
+
+      function confirmReset() {
+        const senha = document.getElementById("resetPassword").value;
+        console.log(senha);
+
+        fetch(`${BaseUrl}/reset`, {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ senha: senha }),
+        })
+          .then((response) => {
+            if (response.ok) {
+              alert("Sistema resetado com sucesso!");
+              closeResetPopup();
+            } else {
+              console.log(response);
+              document.getElementById("resetError").classList.remove("hidden");
+            }
+          })
+          .catch((error) => {
+            document.getElementById("resetError").classList.remove("hidden");
+            console.error(error);
+          });
+      }
+      function login() {
+        const usuario = document.getElementById("usuario").value; // Pega o valor do select (mesário ou administrador)
+        console.log(usuario);
+
+        // const usuario = document.getElementById("usuario").value;
+        const senha = document.getElementById("senha").value;
+
+        if (!usuario || !senha) {
+          document.getElementById("error-message").innerText =
+            "Digite o usuário e a senha!";
+          return;
+        }
+
+        const data = {
+          username: usuario,
+          password: senha,
+        };
+
+        console.log("Tentando login com:", data);
+        console.log("URL da requisição:", `${BaseUrl}/auth/login`);
+
+        fetch(`${BaseUrl}/auth/login`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        })
+          .then((response) => {
+            console.log("Response status:", response.status);
+            return response.json();
+          })
+          .then((data) => {
+            console.log("Resposta do servidor:", data);
+            if (data.accessToken) {
+              localStorage.setItem("accessToken", data.accessToken);
+              window.location.href = "hub.html";
+            } else {
+              document.getElementById("error-message").innerText =
+                "Usuário ou senha incorretos!";
+            }
+          })
+          .catch((error) => {
+            console.error("Erro ao tentar login:", error);
+            document.getElementById("error-message").innerText =
+              "Erro ao tentar fazer login.";
+          });
+      }
+    </script>
+  </body>
+</html>

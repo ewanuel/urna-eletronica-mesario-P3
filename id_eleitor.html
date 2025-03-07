@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Página do Mesário</title>
+  <link rel="stylesheet" href="styleMesario.css">
+  <script src="https://kit.fontawesome.com/877e197de7.js" crossorigin="anonymous"></script>
+  <script src="constantes.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    .shadow-custom {
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+    input::placeholder {
+      text-transform: none;
+    }
+    .azul {
+      background-color: #302681;
+    }
+  </style>
+</head>
+
+<body class="bg-gray-100 flex items-center justify-center h-screen">
+  <nav>
+    <i class="fa-solid fa-bars" onclick="toggleMenu()"></i>
+    <div class="nv_est" id="menuItems">
+      <a onclick="entrarManual()" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-lg text-md font-semibold transition white-text-imp cursor-pointer"title="Manual"><i class="fa-solid fa-book-open mr-2"></i>Manual</a>
+      <a href="hub.html">Home</a>
+      <a href="hub_chapas.html">Gerenciador de Candidatos</a>
+      <a href="hub_eleitor.html">Gerenciador de Eleitores</a>
+      <a onclick="AdmPopup()" class="w-full bg-yellow-500 hover:bg-yellow-600 cursor-pointer text-white py-2 px-4 rounded-lg text-md font-semibold transition white-text-imp"title="Sair do Sistema"><i class="fa-solid fa-lock mr-2"></i>Administração</a>
+      <a href="id_eleitor.html">Iniciar Processo</a>
+      <a href="index.html" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg text-md font-semibold transition white-text-imp"title="Sair do Sistema"><i class="fa-solid fa-right-from-bracket mr-2 icon-rotate"></i>Sair</a>
+    </div>
+  </nav>
+
+  <div class="container mx-auto p-4">
+    <div
+      class="bg-gray-300 rounded-lg shadow-lg p-8 max-w-lg mx-auto relative min-h-[450px] flex flex-col items-center justify-center">
+      <div class="absolute top-4 right-4">
+        <button onclick="voltarHub()"
+          class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-full text-md font-semibold transition"
+          title="Página anterior">
+          <i class="fa-solid fa-circle-chevron-left mr-2"></i> Voltar
+        </button>
+      </div>
+      <div class="absolute top-4 left-4">
+        <button onclick="toggleTheme()" id="md_es"
+          class="bg-gray-600 hover:bg-black text-white py-2 px-4 rounded-full text-md font-semibold transition"
+          title="Ativar modo escuro">
+          Modo Escuro
+        </button>
+      </div>
+
+      <div class="text-center mb-4 mt-2">
+        <h1 class="text-2xl font-semibold mb-2 text-gray-700">Processo de Votação</h1>
+        <h2 class="text-gray-700 mb-4">Digite o RA do eleitor para buscar seu registro e autorizar a votação.</h2>
+      </div>
+
+      <div class="flex flex-col items-center">
+        <p id="mensagem" class="font-bold text-center mb-4"></p>
+        <div id="eleitores" class="mb-4 w-full flex justify-center">
+          <div class="rounded-lg w-full max-w-md hidden text-center" id="eleitoresContainer">
+          </div>
+        </div>
+
+        <div class="flex items-center w-full max-w-md">
+          <div class="relative w-full">
+            <!-- Select para escolher RA, Nome ou Classe -->
+            <select id="searchOption" onchange="atualizarPlaceholder()" class="absolute left-0 top-0 z-10 w-1/4 h-full pl-3 bg-transparent outline-none border-none rounded-l-lg">
+              <option value="ra">RA</option>
+              <option value="nome">Nome</option>
+              <option value="classe">Classe</option>
+            </select>
+            <!-- Input de busca -->
+            <input type="search" name="ra" id="ra" placeholder="RA do eleitor" autofocus
+              class="border- border-gray-300 rounded-r-lg pl-12 p-3 w-full text-center text-gray-700 h-10 uppercase" 
+              />
+          </div>
+          <button
+            class="azul text-white p-3 rounded-r-lg hover:bg-blue-700 transition h-10 flex items-center justify-center"
+            id="buscarBTN" onclick="buscarEleitores()" title="Consultar eleitor">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </button>
+        </div>
+        
+        
+      </div>
+    </div>
+
+    <div class="absolute top-4 right-4">
+      <button class="bg-sky-700 hover:bg-sky-950 text-white py-3 px-5 rounded-lg text-md font-semibold transition border-none" id="question" onclick="openPopup()"><i class="fa-solid fa-question"></i>
+      </button>
+    </div>
+
+    <div id="helpPopup" class=" absolute fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+    <div class="bg-white rounded-lg p-8 max-w-md mx-auto shadow-custom">
+      <h3 class="text-gray-700 text-xl font-bold mb-4">Ajuda</h3>
+      <p class="text-gray-600 mb-4">O Menu de liberação permite que os eleitores exerçam seu direito ao voto 
+        <ul>
+          <li class="text-gray-600 mb-4 text-left"><strong>Campo de busca: </strong> Permite pesquisar o eleitor por RA, Nome ou Classe </li>
+          <div class="flex items-center w-full max-w-md">
+            <div class="relative w-full">
+              <!-- Select para escolher RA, Nome ou Classe -->
+              <select id="searchOption" class="absolute left-0 top-0 z-10 w-1/4 h-full pl-3 bg-transparent outline-none border-none rounded-l-lg cursor-default">
+                <option value="ra">RA</option>
+                <option value="nome">Nome</option>
+                <option value="classe">Classe</option>
+              </select>
+              <!-- Input de busca -->
+              <input type="search" name="ra" id="ra" placeholder="RA do eleitor" autofocus
+                class="border- border-gray-300 rounded-r-lg pl-12 p-3 w-full text-center text-gray-700 h-10 uppercase cursor-default" 
+                readonly/>
+            </div>
+            <button
+              class="azul text-white p-3 rounded-r-lg hover:bg-blue-700 transition h-10 flex items-center justify-center"
+              title="Consultar eleitor">
+              <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+          </div>
+          <li class="text-gray-600 mb-4 text-left"><strong>Liberar Voto: </strong> Permite que o eleitor vote, caso o mesmo já tenha votado aparecera a mensagem:"Eleitor já votou!"</li>
+          <button 
+          class="w-full bg-green-500 text-white py-3 rounded-lg font-semibold text-lg cursor-default">
+          Liberar Voto
+        </button>
+      </p>
+      <br>
+      <button onclick="closePopup()" class="bg-sky-700 hover:bg-sky-950 text-white py-2 px-4 rounded-lg text-md font-semibold transition ml-float">Fechar</button>
+    </div>
+  </div>
+
+  </div>
+
+  <script src="mainMesario.js"></script>
+  
+  <script>
+    function verificarAutenticacao() {
+  const token = localStorage.getItem("accessToken"); 
+  if (!token) {
+    window.location.href = "index.html";
+  }
+}
+
+verificarAutenticacao();
+
+
+function buscarEleitores() {
+  const pesquisa = document.getElementById("ra").value;
+  const searchOption = document.getElementById("searchOption").value;
+
+  console.log("Iniciando a busca para:", pesquisa);
+
+  let url = `${BaseUrl}/eleitor/`;
+
+  if (searchOption === "ra") {
+    url += pesquisa;  
+  } else if (searchOption === "nome") {
+    url += `nome/${pesquisa}`;  
+  } else if (searchOption === "classe") {
+    
+    const classe = pesquisa.slice(0, 2);  
+    url += classe;  
+  }  
+  fetch(url, {            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
+            },})
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Erro na requisição");
+      }
+      return response.json();
+    })
+    .then((eleitor) => {
+      const eleitorRA = eleitor.ra;
+
+      const eleitoresContainer = document.getElementById("eleitoresContainer");
+      if (typeof eleitorRA !== "undefined") {
+        eleitoresContainer.innerHTML = `
+          <section class="liberarVoto p-4 border border-black rounded-lg mb-4 text-center">
+              <p class="text-lg font-semibold text-gray-700">${eleitor.nome}. RA: ${eleitor.ra}</p>
+            <button class="w-[100%] h-10 text-center botao bg-green-500 text-white py-2 px-4 rounded-lg mt-4 hover:bg-green-600 transition" id="liberarBTN" onclick="liberarEleitor('${eleitor.ra}')">Liberar Voto</button>
+          </section>
+        `;
+        eleitoresContainer.classList.remove("hidden");
+        eleitoresContainer.style.display = "block";
+      } else {
+        eleitoresContainer.classList.add("hidden");
+        eleitoresContainer.innerHTML = "";
+      }
+    })
+    .catch((error) => {
+      console.log("Erro na requisição:", error);
+      document.getElementById("mensagem").innerHTML = "Eleitor não encontrado ou incorreto.";
+      document.getElementById("mensagem").style.color = "red";
+      document.getElementById("mensagem").style.display = "block";
+
+      setTimeout(function () {
+        document.getElementById("mensagem").innerHTML = "";
+        document.getElementById("mensagem").style.display = "none";
+      }, 4000);
+    });
+}
+
+    function liberarEleitor(ra) {
+      const url = `${BaseUrl}/eleitor/verificar/${ra}`;
+      const data = JSON.stringify({
+        ra: ra,
+      });
+
+      fetch(url, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
+
+          },
+          body: data,
+        })
+        .then((response) => {
+          if (!response.ok) {
+            // Handle error
+          } else {
+            document.getElementById("mensagem").innerHTML =
+              "Eleitor liberado para votar!";
+            document.getElementById("mensagem").style.color = "green";
+            document.getElementById("liberarBTN").style.display = "none";
+            setTimeout(function () {
+              location.href = "id_eleitor.html";
+            }, 3000);
+          }
+          return response.json();
+        })
+        .catch((error) => {
+          if (
+            error.name === "TypeError" &&
+            error.message === "Failed to fetch"
+          ) {
+            console.error("Erro de CORS:", error);
+            document.getElementById("mensagem").innerHTML =
+              "Eleitor já votou! Tente novamente";
+            document.getElementById("mensagem").style.color = "red";
+            document.getElementById("liberarBTN").style.display = "none";
+            setTimeout(function () {
+              location.href = "id_eleitor.html";
+            }, 3000);
+          } else if (error.response && error.response.status === 502) {
+            // Handle 502 error
+          }
+        });
+    }
+  </script>
+</body>
+
+</html>

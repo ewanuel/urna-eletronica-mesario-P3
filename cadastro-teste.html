@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cadastro do Eleitor</title>
+    <link rel="stylesheet" href="styleMesario.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.7.4/lottie.min.js"></script>
+
+    <script
+      src="https://kit.fontawesome.com/877e197de7.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="constantes.js"></script>
+    <style>
+      .mensagem {
+        text-align: center;
+        font-weight: bold;
+        font-size: large;
+        margin: 10px 0;
+      }
+
+      #loadingOverlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: none;
+        z-index: 50;
+      }
+
+      .shadow-custom {
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      }
+    </style>
+  </head>
+
+  <body
+    class="bg-gray-100 flex items-center justify-center min-h-screen shadow-custom"
+  >
+    <nav>
+      <i class="fa-solid fa-bars" onclick="toggleMenu()"></i>
+      <div class="nv_est" id="menuItems">
+        <a href="hub.html">Home</a>
+        <a href="hub_chapas.html">Gerenciador de Candidatos</a>
+        <a href="hub_eleitor.html">Gerenciador de Eleitores</a>
+        <a
+          onclick="AdmPopup()"
+          class="w-full bg-yellow-500 hover:bg-yellow-600 cursor-pointer text-white py-2 px-4 rounded-lg text-md font-semibold transition white-text-imp"
+          title="Sair do Sistema"
+          ><i class="fa-solid fa-lock mr-2"></i>Administração</a
+        >
+        <a href="id_eleitor.html">Iniciar Processo</a>
+        <a
+          href="index.html"
+          class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg text-md font-semibold transition white-text-imp"
+          title="Sair do Sistema"
+          ><i class="fa-solid fa-right-from-bracket mr-2 icon-rotate"></i
+          >Sair</a
+        >
+      </div>
+    </nav>
+
+    <div class="container mx-auto p-4">
+      <div
+        class="bg-gray-300 rounded-lg shadow-custom p-6 w-[60%] mx-auto relative"
+      >
+        <div class="absolute top-4 right-4 h-20">
+          <button
+            onclick="voltarHubEleitores()"
+            id="voltarHubEleitores"
+            class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-full text-md font-semibold transition"
+            title="Página anterior"
+          >
+            <i class="fa-solid fa-circle-chevron-left mr-2"></i> Voltar
+          </button>
+        </div>
+        <div class="absolute top-4 left-4">
+          <button
+            onclick="toggleTheme()"
+            id="md_es"
+            class="bg-gray-600 hover:bg-black text-white py-2 px-4 rounded-full text-md font-semibold transition"
+            title="Ativar modo escuro"
+          >
+            Modo Escuro
+          </button>
+        </div>
+        <h1 class="text-gray-800 font-bold text-3xl text-center">
+          Cadastro do Eleitor
+        </h1>
+
+        <div id="divInputs" class="space-y-6">
+          <div class="flex flex-col">
+            <label for="classe" class="font-semibold text-gray-700"
+              >Classe</label
+            >
+            <input
+              type="text"
+              id="classe"
+              placeholder="(ex: 5F)"
+              class="text-gray-700 mt-1 p-2 border border-gray-400 rounded-lg w-1/5 h-10"
+              maxlength="2"
+              oninput="this.value = this.value.toUpperCase()"
+            />
+          </div>
+
+          <div
+            class="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0"
+          >
+            <div class="flex-1 flex flex-col">
+              <label for="numeros" class="font-semibold text-gray-700"
+                >Números (um por linha)</label
+              >
+              <textarea
+                id="numeros"
+                placeholder="Digite um número por linha"
+                class="text-gray-700 mt-1 p-2 border border-gray-400 rounded-lg resize-none h-40 w-full"
+                oninput="this.value = this.value.replace(/[^0-9\n]/g, '')"
+              ></textarea>
+            </div>
+            <div class="flex-1 flex flex-col">
+              <label for="nomes" class="font-semibold text-gray-700"
+                >Nomes (um por linha)</label
+              >
+              <textarea
+                id="nomes"
+                placeholder="Digite um nome por linha"
+                class="text-gray-700 mt-1 p-2 border border-gray-400 rounded-lg resize-none h-40 w-full"
+                oninput="this.value = this.value.toUpperCase().replace(/[^A-Z\s\n]/g, '')"
+              ></textarea>
+            </div>
+          </div>
+        </div>
+        <div
+          id="loadingOverlay"
+          class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden"
+        >
+          <div id="lottiePlayer" style="width: 200px; height: 200px"></div>
+        </div>
+
+        <div
+          id="registro-box"
+          class="mt-8 hidden flex justify-center space-x-6"
+        >
+          <div id="registrosCadastrados" class="flex-1 text-center">
+            <h2 class="font-bold text-lg text-gray-700">Registros Criados</h2>
+            <textarea
+              id="resultadoCadastrados"
+              class="mt-1 p-2 border border-gray-400 rounded-lg w-full h-40 resize-none text-gray-700"
+              readonly
+            ></textarea>
+            <div
+              id="mensagemCadastrados"
+              class="mensagem text-green-600"
+              style="display: none"
+            >
+              Cadastro realizado com sucesso.
+            </div>
+          </div>
+
+          <div id="registrosNaoCadastrados" class="flex-1 text-center">
+            <h2 class="font-bold text-lg text-gray-700">Erro ao cadastrar</h2>
+            <textarea
+              id="resultadoNaoCadastrados"
+              class="mt-1 p-2 border border-gray-400 rounded-lg w-full h-40 resize-none text-gray-700"
+              readonly
+            ></textarea>
+            <div
+              id="mensagemNaoCadastrados"
+              class="mensagem text-red-600"
+              style="display: none"
+            >
+              Verifique os RAs duplicados!
+            </div>
+          </div>
+        </div>
+
+        <div id="btnMaisRegistro" class="mt-6 hidden flex justify-center">
+          <button
+            onclick="adicionarMaisRegistro()"
+            class="bg-red-500 text-white py-2 px-6 rounded-lg font-semibold hover:bg-red-600 transition-all"
+          >
+            <i class="fa-solid fa-circle-chevron-left"></i> Voltar para o
+            cadastro
+          </button>
+        </div>
+
+        <div id="botoes" class="flex justify-center mt-8">
+          <button
+            onclick="gerarRegistros()"
+            class="bg-green-500 text-white py-2 px-6 rounded-lg font-semibold hover:bg-green-600 transition-all"
+          >
+            <i class="fa-solid fa-user-plus"></i> Cadastrar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="absolute top-4 right-4">
+      <button
+        class="bg-sky-700 hover:bg-sky-950 text-white py-3 px-5 rounded-lg text-md font-semibold transition border-none"
+        id="question"
+        onclick="openPopup()"
+      >
+        <i class="fa-solid fa-question"></i>
+      </button>
+    </div>
+
+    <div
+      id="helpPopup"
+      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden"
+    >
+      <div class="bg-white rounded-lg p-8 max-w-md mx-auto shadow-custom">
+        <h3 class="text-gray-700 text-xl font-bold mb-4">Ajuda</h3>
+        <p class="text-gray-600 mb-4"></p>
+        <button
+          onclick="closePopup()"
+          class="bg-sky-700 hover:bg-sky-950 text-white py-2 px-4 rounded-lg text-md font-semibold transition"
+        >
+          Fechar
+        </button>
+      </div>
+    </div>
+
+    <script src="mainMesario.js"></script>
+    <script>
+      function verificarAutenticacao() {
+        const token = localStorage.getItem("accessToken");
+        if (!token) {
+          window.location.href = "index.html";
+        }
+      }
+
+      verificarAutenticacao();
+      
+      function gerarRegistros() {
+        const classe = document.getElementById("classe").value.trim();
+        const numeros = getValoresFormatados("numeros");
+        const nomes = getValoresFormatados("nomes");
+
+        if (!validarEntradas(classe, numeros, nomes)) return;
+
+        exibirCarregamento(true);
+        enviarDadosParaAPI(gerarListaEleitores(classe, numeros, nomes));
+      }
+
+      function getValoresFormatados(id) {
+        return document
+          .getElementById(id)
+          .value.split("\n")
+          .map((item) => item.trim())
+          .filter((item) => item !== "");
+      }
+
+      function validarEntradas(classe, numeros, nomes) {
+        if (
+          !classe ||
+          numeros.length === 0 ||
+          nomes.length === 0 ||
+          nomes.length !== numeros.length
+        ) {
+          alert("Preencha todos os campos corretamente.");
+          return false;
+        }
+        return true;
+      }
+
+      function gerarListaEleitores(classe, numeros, nomes) {
+        return numeros.map((numero, i) => ({
+          nome: nomes[i],
+          ra: classe + numero.padStart(2, "0"),
+        }));
+      }
+
+      function exibirCarregamento(ativo) {
+        document.getElementById("loadingOverlay").style.display = ativo
+          ? "flex"
+          : "none";
+        if (ativo) {
+          lottie.loadAnimation({
+            container: document.getElementById("lottiePlayer"),
+            renderer: "svg",
+            loop: true,
+            autoplay: true,
+            path: "https://lottie.host/f2f5377c-ba0e-4103-bcf9-b38a0cd9e758/Cc5nrgtPXC.json",
+          });
+        }
+      }
+
+      function enviarDadosParaAPI(eleitores) {
+        const token = localStorage.getItem("accessToken");
+        console.log("Token enviado:", token); // Verifica se o token está correto
+
+        fetch(`${BaseUrl}/eleitor`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // Enviando o token no header
+          },
+          body: JSON.stringify(eleitores),
+        })
+          .then((response) => {
+            console.log("Status da resposta:", response.status);
+            if (!response.ok) {
+              return response.text().then((text) => {
+                throw new Error(text);
+              });
+            }
+            return response.json();
+          })
+          .then((result) => processarRespostaAPI(result))
+          .catch((error) => {
+            console.error("Erro:", error);
+            exibirCarregamento(false);
+          });
+      }
+
+      function processarRespostaAPI(result) {
+        exibirCarregamento(false);
+
+        console.log("Resposta da API:", result); // Log para depuração
+
+        const { registrados = [], naoRegistrados = [] } = result; // Ajustado para nova estrutura do backend
+
+        console.log("Eleitores cadastrados:", registrados);
+        console.log("Eleitores não cadastrados:", naoRegistrados);
+
+        exibirRegistros(
+          registrados,
+          "resultadoCadastrados",
+          "mensagemCadastrados",
+          "registrosCadastrados"
+        );
+        exibirRegistros(
+          naoRegistrados,
+          "resultadoNaoCadastrados",
+          "mensagemNaoCadastrados",
+          "registrosNaoCadastrados"
+        );
+
+        document.getElementById("divInputs").style.display = "none";
+        document.getElementById("registro-box").style.display = "flex";
+        document.getElementById("btnMaisRegistro").style.display = "flex";
+        document.getElementById("botoes").style.display = "none";
+      }
+
+      function exibirRegistros(lista, resultadoId, mensagemId, containerId) {
+        document.getElementById(resultadoId).value = lista
+          .map((e) => `${e.nome}, RA: ${e.ra}`)
+          .join("\n");
+        document.getElementById(containerId).style.display =
+          lista.length > 0 ? "block" : "none";
+        document.getElementById(mensagemId).style.display =
+          lista.length > 0 ? "block" : "none";
+      }
+
+      function adicionarMaisRegistro() {
+        window.location.reload();
+      }
+    </script>
+  </body>
+</html>
