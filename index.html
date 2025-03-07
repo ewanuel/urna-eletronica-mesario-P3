@@ -12,7 +12,6 @@
     <script src="constantes.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-      /* Ajuste de estilo específico para o tamanho do texto */
       h2 {
         font-size: medium;
       }
@@ -98,7 +97,6 @@
           </a>
         </p>
 
-        <!-- Div para o popup -->
         <div
           id="resetPopup"
           class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden"
@@ -111,7 +109,6 @@
               Digite a senha para confirmar o reset do sistema:
             </p>
 
-            <!-- Input de senha -->
             <input
               type="password"
               id="resetPassword"
@@ -120,12 +117,10 @@
               autofocus
             />
 
-            <!-- Mensagem de erro (inicialmente oculta) -->
             <p id="resetError" class="text-red-500 text-sm hidden">
               Senha incorreta!
             </p>
 
-            <!-- Botões -->
             <div class="flex justify-end gap-2">
               <button
                 onclick="closeResetPopup()"
@@ -167,8 +162,8 @@
       });
       function openResetPopup() {
         document.getElementById("resetPopup").classList.remove("hidden");
-        document.getElementById("resetError").classList.add("hidden"); // Esconde erro ao abrir
-        document.getElementById("resetPassword").value = ""; // Limpa campo
+        document.getElementById("resetError").classList.add("hidden"); 
+        document.getElementById("resetPassword").value = ""; 
       }
 
       function closeResetPopup() {
@@ -199,7 +194,7 @@
           });
       }
       function login() {
-        const usuario = document.getElementById("usuario").value; // Pega o valor do select (mesário ou administrador)
+        const usuario = document.getElementById("usuario").value; 
         console.log(usuario);
 
         // const usuario = document.getElementById("usuario").value;
