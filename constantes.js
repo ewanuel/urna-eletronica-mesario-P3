@@ -1,1 +1,0 @@
-var BaseUrl  = 'https://mesariobarao.squareweb.app'
