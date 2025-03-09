@@ -17,29 +17,29 @@
     }
 
     .bg-gray-300 {
-  overflow-y: auto;  
-  max-height: 70vh; /* Ajuste conforme necessário */
-  white-space: normal; /* Permite que os elementos quebrem linha */
-}
+      overflow-y: auto;
+      max-height: 70vh; /* Ajuste conforme necessário */
+      white-space: normal; /* Permite que os elementos quebrem linha */
+    }
 
-.bg-gray-300::-webkit-scrollbar {
-  width: 8px; 
-}
+    .bg-gray-300::-webkit-scrollbar {
+      width: 8px;
+    }
 
-.bg-gray-300::-webkit-scrollbar-thumb {
-  background-color: #5a5a5a;
-  border-radius: 10px;
-  transition: background-color 0.3s ease;
-}
+    .bg-gray-300::-webkit-scrollbar-thumb {
+      background-color: #5a5a5a;
+      border-radius: 10px;
+      transition: background-color 0.3s ease;
+    }
 
-.bg-gray-300::-webkit-scrollbar-thumb:hover {
-  background-color: #5a5a5a;
-}
+    .bg-gray-300::-webkit-scrollbar-thumb:hover {
+      background-color: #5a5a5a;
+    }
 
-h2 {
-  margin-top: 5%;
-  padding-top: 2px;
-}
+    h2 {
+      margin-top: 5%;
+      padding-top: 2px;
+    }
   </style>
 </head>
 
@@ -47,18 +47,17 @@ h2 {
   <nav>
     <i class="fa-solid fa-bars" onclick="toggleMenu()"></i>
     <div class="nv_est" id="menuItems">
-      <a onclick="entrarManual()" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-lg text-md font-semibold transition white-text-imp cursor-pointer"title="Manual"><i class="fa-solid fa-book-open mr-2"></i>Manual</a>
+      <a onclick="entrarManual()" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-lg text-md font-semibold transition white-text-imp cursor-pointer" title="Manual"><i class="fa-solid fa-book-open mr-2"></i>Manual</a>
       <a href="hub.html">Home</a>
       <a href="hub_chapas.html">Gerenciador de Candidatos</a>
       <a href="hub_eleitor.html">Gerenciador de Eleitores</a>
-      <a onclick="AdmPopup()" class="w-full bg-yellow-500 hover:bg-yellow-600 cursor-pointer text-white py-2 px-4 rounded-lg text-md font-semibold transition white-text-imp"title="Sair do Sistema"><i class="fa-solid fa-lock mr-2"></i>Administração</a>
+      <a onclick="AdmPopup()" class="w-full bg-yellow-500 hover:bg-yellow-600 cursor-pointer text-white py-2 px-4 rounded-lg text-md font-semibold transition white-text-imp" title="Sair do Sistema"><i class="fa-solid fa-lock mr-2"></i>Administração</a>
       <a href="id_eleitor.html">Iniciar Processo</a>
-      <a href="index.html" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg text-md font-semibold transition white-text-imp"title="Sair do Sistema"><i class="fa-solid fa-right-from-bracket mr-2 icon-rotate"></i>Sair</a>
+      <a href="index.html" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg text-md font-semibold transition white-text-imp" title="Sair do Sistema"><i class="fa-solid fa-right-from-bracket mr-2 icon-rotate"></i>Sair</a>
     </div>
   </nav>
 
   <div id="helpPopup" class="container mx-auto p-4">
-
     <div class="bg-gray-300 rounded-lg shadow-custom p-10 max-w-2xl mx-auto relative scroll-container">
       <div class="absolute top-4 left-4">
         <button onclick="toggleTheme()" id="md_es"
@@ -77,52 +76,43 @@ h2 {
       </div>
 
       <div class="text-center space-y-8 mt-6">
+        <!-- Conteúdo do manual aqui -->
         <div>
-
           <h2 class="text-gray-700 font-bold text-2xl mb-4">
             Botões Gerais
           </h2>
-          
-          <p class="text-gray-600 mb-4">O botões que aparecem em todas as páginas:
-
+          <p class="text-gray-600 mb-4">O botões que aparecem em todas as páginas:</p>
           <ul>
             <li class="text-gray-600 mb-4 text-left"><strong>Modo Escuro/Claro</strong> Alterna entre o tema escuro e claro do sistema</li>
             <button id="md_es"
-          class="bg-gray-600 hover:bg-black text-white py-2 px-4 rounded-full text-md font-semibold transition cursor-default"
-          title="Ativar modo escuro">
-          Modo Escuro
-          </button>
+              class="bg-gray-600 hover:bg-black text-white py-2 px-4 rounded-full text-md font-semibold transition cursor-default"
+              title="Ativar modo escuro">
+              Modo Escuro
+            </button>
           </ul>
-
           <ul>
             <li class="text-gray-600 mb-4 text-left"><strong>Menu burger:</strong> Um menu com atalhos para os principais locais do sistema</li>
-            
             <div style="display: flex; justify-content: center; align-items: center;">
               <img src="menu burger icon.png" alt="Menu Icon" style="width: 50px;">
             </div>
-          
           </ul>
-
           <ul>
-            <li class="text-gray-600 mb-4 text-left"><strong>Voltar:</strong> volta para a página anterior</li>
-            
-            <button 
-          class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-full text-md font-semibold transition cursor-default"
-          title="Página anterior">
-          <i class="fa-solid fa-circle-chevron-left mr-2"></i> Voltar
-        </button>
-          
-
-          </ul>
-
-          <ul>
-          
-            <li class="text-gray-600 mb-4 text-left"><strong>Duvida:</strong> Apresenta a função de todos os mecanismos da página</li>
-            <button class="bg-sky-700 hover:bg-sky-950 text-white py-3 px-5 rounded-lg text-md font-semibold transition border-none cursor-default" id="question"><i class="fa-solid fa-question" aria-hidden="true"></i>
+            <li class="text-gray-600 mb-4 text-left"><strong>Voltar:</strong> Volta para a página anterior</li>
+            <button
+              class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-full text-md font-semibold transition cursor-default"
+              title="Página anterior">
+              <i class="fa-solid fa-circle-chevron-left mr-2"></i> Voltar
             </button>
           </ul>
-
-          <br>
+          <ul>
+            <li class="text-gray-600 mb-4 text-left"><strong>Dúvida:</strong> Apresenta a função de todos os mecanismos da página</li>
+            <button class="bg-sky-700 hover:bg-sky-950 text-white py-3 px-5 rounded-lg text-md font-semibold transition border-none cursor-default" id="question">
+              <i class="fa-solid fa-question" aria-hidden="true"></i>
+            </button>
+          </ul>
+        <ul>
+          
+         
           <br>
 
           <h2 class="text-gray-700 font-bold text-2xl mb-4">
@@ -461,14 +451,27 @@ h2 {
             </button>
           </p>
         </div>
-
-  
-
+        
+        
+      </div>
+    </div>
   </div>
 
   <script src="mainMesario.js"></script>
+  <script>
+    // Função para garantir que a página comece no topo
+    function scrollToTop() {
+      const container = document.querySelector('.bg-gray-300');
+      if (container) {
+        container.scrollTop = 0; // Rola a div para o topo
+      }
+    }
+
+    // Adiciona o evento load para garantir que a página role para o topo após o carregamento completo
+    window.addEventListener("load", function() {
+      scrollToTop();
+    });
+  </script>
 </body>
-
-
 
 </html>
