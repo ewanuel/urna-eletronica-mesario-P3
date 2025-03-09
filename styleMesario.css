@@ -37,12 +37,12 @@ h1 {
   position: absolute;
   top: 0;
   left: 0;
-  width: 17%;
-  height: 75%;
+  width: 230px;
+  height: 100vh;
   background-color: var(--branco);
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
   z-index: 9;
-  padding: 2%;
+  padding: 3%;
   transition: background-color 0.3s;
 }
 
@@ -51,8 +51,8 @@ h1 {
   text-transform: uppercase;
   text-decoration: none;
   color: black;
-  padding: 7%;
-  margin-top: 7%;
+  padding: 4%;
+  margin-top: 15px;
   border-bottom: 1px solid #ccc;
   border-bottom: none;
 }
