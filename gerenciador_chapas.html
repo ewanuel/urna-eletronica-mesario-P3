@@ -389,7 +389,9 @@
         if (confirm("Tem certeza que deseja excluir este candidato?")) {
           fetch(`${BaseUrl}/candidato/${chapa}`, {
             method: "DELETE",
-            
+            headers: {
+              "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
+            },
           })
             .then((response) => {
               if (response.ok) {
