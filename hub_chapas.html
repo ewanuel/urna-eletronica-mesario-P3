@@ -142,6 +142,67 @@
         }
       }
 
+      function verificarAutenticacao() {
+      const token = localStorage.getItem("accessToken");
+      if (!token) {
+        window.location.href = "index.html";
+      }
+    }
+
+    function obterRoleDoToken() {
+      const token = localStorage.getItem("accessToken");
+      if (!token) return null;
+
+      try {
+        const payloadBase64 = token.split('.')[1]; 
+        const payloadJSON = JSON.parse(atob(payloadBase64));
+        return payloadJSON.scope; 
+      } catch (error) {
+        console.error("Erro ao decodificar o token:", error);
+        return null;
+      }
+    }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const botaoAdmin = document.getElementById("botaoAdmin");
+    const botaoAdministracao = document.getElementById("botaoAdministracao");
+    const navAdm = document.getElementById("navAdm"); 
+    const role = obterRoleDoToken();
+
+    
+    if (role !== "ADMIN" && role !== "MESARIO") {
+      if (botaoAdmin) botaoAdmin.style.display = "none"; 
+    }
+
+    // Apenas ADMIN pode ver o botão de Administração
+    if (role !== "ADMIN") {
+      if (botaoAdministracao) botaoAdministracao.style.display = "none"; 
+      if (navAdm) navAdm.style.display = "none"; 
+    }
+  });
+
+    function entrarHubChapas() {
+      const role = obterRoleDoToken();
+      if (role !== "ADMIN" && role !== "MESARIO") {
+        alert("Acesso negado! Você não tem permissão para acessar esta área.");
+        window.location.href = "index.html"; 
+      } else {
+        window.location.href = "hub_chapas.html"; 
+      }
+    }
+
+    function irParaAreaAdmin() {
+      const role = obterRoleDoToken();
+      if (role !== "ADMIN") {
+        alert("Acesso negado! Você não tem permissão para acessar esta área.");
+        window.location.href = "index.html"; 
+      } else {
+        window.location.href = "admin.html"; 
+      }
+    }
+
+    verificarAutenticacao();
+
       verificarAutenticacao();
   </script>
 </body>

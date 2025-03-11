@@ -246,3 +246,33 @@ function closeAdminPopup() {
 module.exports = {
   darkMode: "class",
 };
+
+// scriptAdm.js
+
+// Função para decodificar o token JWT e obter a role do usuário
+function obterRoleDoToken() {
+  const token = localStorage.getItem("accessToken");
+  if (!token) return null;
+
+  try {
+    const payloadBase64 = token.split('.')[1]; // Segunda parte do token
+    const payloadJSON = JSON.parse(atob(payloadBase64)); // Decodifica para JSON
+    return payloadJSON.scope; // Retorna a role do usuário
+  } catch (error) {
+    console.error("Erro ao decodificar o token:", error);
+    return null;
+  }
+}
+
+// Função para remover o botão de Administração se o usuário for MESARIO
+function verificarPermissaoAdm() {
+  const role = obterRoleDoToken();
+  const botaoAdm = document.querySelector("a[onclick*='Adm()']"); // Seleciona o botão de Administração no nav
+
+  if (botaoAdm && role === "MESARIO") {
+    botaoAdm.remove(); // Remove o botão do DOM se o usuário for MESARIO
+  }
+}
+
+// Executa a verificação quando o DOM estiver carregado
+document.addEventListener("DOMContentLoaded", verificarPermissaoAdm);

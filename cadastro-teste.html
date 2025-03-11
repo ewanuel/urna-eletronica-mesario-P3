@@ -350,6 +350,67 @@
       function adicionarMaisRegistro() {
         window.location.reload();
       }
+
+      function verificarAutenticacao() {
+      const token = localStorage.getItem("accessToken");
+      if (!token) {
+        window.location.href = "index.html";
+      }
+    }
+
+    function obterRoleDoToken() {
+      const token = localStorage.getItem("accessToken");
+      if (!token) return null;
+
+      try {
+        const payloadBase64 = token.split('.')[1]; // Segunda parte do token
+        const payloadJSON = JSON.parse(atob(payloadBase64)); // Decodifica para JSON
+        return payloadJSON.scope; // Retorna a role do usuário
+      } catch (error) {
+        console.error("Erro ao decodificar o token:", error);
+        return null;
+      }
+    }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const botaoAdmin = document.getElementById("botaoAdmin");
+    const botaoAdministracao = document.getElementById("botaoAdministracao");
+    const navAdm = document.getElementById("navAdm"); // Botão de administração no nav
+    const role = obterRoleDoToken();
+
+    // Verifica se o usuário é ADMIN ou MESARIO
+    if (role !== "ADMIN" && role !== "MESARIO") {
+      if (botaoAdmin) botaoAdmin.style.display = "none"; // Oculta o botão de administração
+    }
+
+    // Apenas ADMIN pode ver o botão de Administração
+    if (role !== "ADMIN") {
+      if (botaoAdministracao) botaoAdministracao.style.display = "none"; // Oculta o botão de administração
+      if (navAdm) navAdm.style.display = "none"; // Oculta o botão de administração no nav
+    }
+  });
+
+    function entrarHubChapas() {
+      const role = obterRoleDoToken();
+      if (role !== "ADMIN" && role !== "MESARIO") {
+        alert("Acesso negado! Você não tem permissão para acessar esta área.");
+        window.location.href = "index.html"; // Redireciona para a página inicial
+      } else {
+        window.location.href = "hub_chapas.html"; // Redireciona para a página de gerenciamento de candidatos
+      }
+    }
+
+    function irParaAreaAdmin() {
+      const role = obterRoleDoToken();
+      if (role !== "ADMIN") {
+        alert("Acesso negado! Você não tem permissão para acessar esta área.");
+        window.location.href = "index.html"; // Redireciona para a página inicial
+      } else {
+        window.location.href = "admin.html"; // Redireciona para a página de administração
+      }
+    }
+
+    verificarAutenticacao();
     </script>
   </body>
 </html>
