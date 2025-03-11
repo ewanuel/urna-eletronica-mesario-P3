@@ -63,13 +63,15 @@
     <nav>
       <i class="fa-solid fa-bars" onclick="toggleMenu()"></i>
       <div class="nv_est" id="menuItems">
-        <a href="hub.html">Home</a>
-        <a href="hub_chapas.html">Gerenciador de Candidatos</a>
-        <a href="hub_eleitor.html">Gerenciador de Eleitores</a>
-        <a href="id_eleitor.html">Iniciar Processo</a>
-        <a href="index.html" class="bg-red-500 hover:"title="Sair do Sistema">Sair</a>
+          <a href="hub.html">Home</a>
+          <a href="hub_chapas.html">Gerenciador de Candidatos</a>
+          <a href="hub_eleitor.html">Gerenciador de Eleitores</a>
+          <a href="id_eleitor.html">Iniciar Processo</a>
+          <a onclick="AdmPopup()" id="navAdm" class="w-full bg-yellow-500 hover:bg-yellow-600 cursor-pointer text-white py-2 px-4 rounded-lg text-md font-semibold transition white-text-imp"title="Sair do Sistema"><i class="fa-solid fa-lock mr-2"></i>Administração</a>
+          <a onclick="entrarManual()" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-lg text-md font-semibold transition white-text-imp cursor-pointer" title="Manual"><i class="fa-solid fa-book-open mr-2"></i>Manual</a>
+        <a href="index.html" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg text-md font-semibold transition white-text-imp"title="Sair do Sistema"><i class="fa-solid fa-right-from-bracket mr-2 icon-rotate"></i>Sair</a>
       </div>
-    </nav>
+  </nav>
     <div class="container mx-auto p-4 w-full max-w-2xl">
       <div class="bg-gray-300 rounded-lg shadow-lg p-12 w-[90%] relative">
         <h1 class="text-gray-800 font-bold text-2xl mb-4 text-center">
@@ -213,8 +215,37 @@
     <div id="helpPopup" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
       <div class="bg-white rounded-lg p-8 max-w-md mx-auto shadow-custom">
         <h3 class="text-gray-700 text-xl font-bold mb-4">Ajuda</h3>
-        <p class="text-gray-600 mb-4"></p>
-        <button onclick="closePopup()" class="bg-sky-700 hover:bg-sky-950 text-white py-2 px-4 rounded-lg text-md font-semibold transition">Fechar</button>
+        <p class="text-gray-600 mb-4">O Cadastro de Candidatos possíbilita a inserção de candatos ou grêmios para a eleição 
+          <ul>
+            <li class="text-gray-600 mb-4 text-left"><strong>Digite o número: </strong> Inserção do número do presidenciável que será utilizado no processo eleitoral  </li>
+            <input
+                placeholder="Digite o número"
+                class="mt-1 p-2 border rounded w-full text-gray-700 h-10"
+                oninput="this.value = this.value.slice(0, 2)"
+                readonly
+              />
+            <li class="text-gray-600 mb-4 text-left"><strong>Digite o nome: </strong> Inserção do nome do candidato que será exibido ao eleitor após introdução do número no processo eleitoral</li>
+            <input
+                placeholder="Digite o nome"
+                class="mt-1 p-2 border rounded w-full text-gray-700 h-10 uppercase"
+                oninput="this.value = this.value.toUpperCase()"
+                readonly
+              />
+              <li class="text-gray-600 mb-4 text-left"><strong>Foto do Candidato: </strong> Inserção da imagem que representa o presidenciável e que será exibida no processo eleitoral</li>
+              <input
+              placeholder="Escolher o arquivo"
+                class="mt-1 p-2 border rounded w-full text-gray-700 h-10"
+                readonly
+              />
+              <li class="text-gray-600 mb-4 text-left"><strong>Cadastrar: </strong> Inseri o presidenciável para concorrer as eleições</li>
+              <button
+              class="w-full bg-green-500 text-white py-3 rounded-lg font-semibold text-lg cursor-default"
+          >
+            <i class="fa-solid fa-user-plus"></i> Cadastrar
+          </button>
+        </p>
+        <br>
+        <button onclick="closePopup()" class="bg-sky-700 hover:bg-sky-950 text-white py-2 px-4 rounded-lg text-md font-semibold transition ml-float">Fechar</button>
       </div>
     </div>
 
@@ -224,6 +255,15 @@
       crossorigin="anonymous"
     ></script>
     <script>
+            function verificarAutenticacao() {
+        const token = localStorage.getItem("accessToken");
+        if (!token) {
+          window.location.href = "index.html";
+        }
+      }
+
+      verificarAutenticacao();
+      
       function openSuccessModal() {
         document.getElementById("successModal").style.display = "flex";
       }
@@ -289,11 +329,14 @@
             if (key !== "foto") json[key] = value;
           });
 
+          const token = localStorage.getItem("accessToken");
+          console.log("Token enviado:", token); // Verifica se o token está correto
           fetch(`${BaseUrl}/candidato`, {
             method: "POST",
             body: JSON.stringify(json),
             headers: {
               "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`, // Enviando o token no header
             },
           })
             .then((response) => response.json())
@@ -321,6 +364,68 @@
               alert("Falha ao Cadastrar");
             });
         });
+
+
+        function verificarAutenticacao() {
+      const token = localStorage.getItem("accessToken");
+      if (!token) {
+        window.location.href = "index.html";
+      }
+    }
+
+    function obterRoleDoToken() {
+      const token = localStorage.getItem("accessToken");
+      if (!token) return null;
+
+      try {
+        const payloadBase64 = token.split('.')[1]; // Segunda parte do token
+        const payloadJSON = JSON.parse(atob(payloadBase64)); // Decodifica para JSON
+        return payloadJSON.scope; // Retorna a role do usuário
+      } catch (error) {
+        console.error("Erro ao decodificar o token:", error);
+        return null;
+      }
+    }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const botaoAdmin = document.getElementById("botaoAdmin");
+    const botaoAdministracao = document.getElementById("botaoAdministracao");
+    const navAdm = document.getElementById("navAdm"); // Botão de administração no nav
+    const role = obterRoleDoToken();
+
+    // Verifica se o usuário é ADMIN ou MESARIO
+    if (role !== "ADMIN" && role !== "MESARIO") {
+      if (botaoAdmin) botaoAdmin.style.display = "none"; // Oculta o botão de administração
+    }
+
+    // Apenas ADMIN pode ver o botão de Administração
+    if (role !== "ADMIN") {
+      if (botaoAdministracao) botaoAdministracao.style.display = "none"; // Oculta o botão de administração
+      if (navAdm) navAdm.style.display = "none"; // Oculta o botão de administração no nav
+    }
+  });
+
+    function entrarHubChapas() {
+      const role = obterRoleDoToken();
+      if (role !== "ADMIN" && role !== "MESARIO") {
+        alert("Acesso negado! Você não tem permissão para acessar esta área.");
+        window.location.href = "index.html"; // Redireciona para a página inicial
+      } else {
+        window.location.href = "hub_chapas.html"; // Redireciona para a página de gerenciamento de candidatos
+      }
+    }
+
+    function irParaAreaAdmin() {
+      const role = obterRoleDoToken();
+      if (role !== "ADMIN") {
+        alert("Acesso negado! Você não tem permissão para acessar esta área.");
+        window.location.href = "index.html"; // Redireciona para a página inicial
+      } else {
+        window.location.href = "admin.html"; // Redireciona para a página de administração
+      }
+    }
+
+    verificarAutenticacao();
     </script>
   </body>
 </html>
