@@ -24,7 +24,7 @@
         <a href="hub_chapas.html">Gerenciador de Candidatos</a>
         <a href="hub_eleitor.html">Gerenciador de Eleitores</a>
         <a href="id_eleitor.html">Iniciar Processo</a>
-        <a onclick="AdmPopup()" class="w-full bg-yellow-500 hover:bg-yellow-600 cursor-pointer text-white py-2 px-4 rounded-lg text-md font-semibold transition white-text-imp"title="Sair do Sistema"><i class="fa-solid fa-lock mr-2"></i>Administração</a>
+        <a onclick="AdmPopup()" id="navAdm" class="w-full bg-yellow-500 hover:bg-yellow-600 cursor-pointer text-white py-2 px-4 rounded-lg text-md font-semibold transition white-text-imp"title="Sair do Sistema"><i class="fa-solid fa-lock mr-2"></i>Administração</a>
         <a onclick="entrarManual()" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-lg text-md font-semibold transition white-text-imp cursor-pointer" title="Manual"><i class="fa-solid fa-book-open mr-2"></i>Manual</a>
       <a href="index.html" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg text-md font-semibold transition white-text-imp"title="Sair do Sistema"><i class="fa-solid fa-right-from-bracket mr-2 icon-rotate"></i>Sair</a>
     </div>
@@ -114,7 +114,67 @@
         }
       }
 
-      verificarAutenticacao();
+
+      function verificarAutenticacao() {
+      const token = localStorage.getItem("accessToken");
+      if (!token) {
+        window.location.href = "index.html";
+      }
+    }
+
+    function obterRoleDoToken() {
+      const token = localStorage.getItem("accessToken");
+      if (!token) return null;
+
+      try {
+        const payloadBase64 = token.split('.')[1]; // Segunda parte do token
+        const payloadJSON = JSON.parse(atob(payloadBase64)); // Decodifica para JSON
+        return payloadJSON.scope; // Retorna a role do usuário
+      } catch (error) {
+        console.error("Erro ao decodificar o token:", error);
+        return null;
+      }
+    }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const botaoAdmin = document.getElementById("botaoAdmin");
+    const botaoAdministracao = document.getElementById("botaoAdministracao");
+    const navAdm = document.getElementById("navAdm"); // Botão de administração no nav
+    const role = obterRoleDoToken();
+
+    // Verifica se o usuário é ADMIN ou MESARIO
+    if (role !== "ADMIN" && role !== "MESARIO") {
+      if (botaoAdmin) botaoAdmin.style.display = "none"; // Oculta o botão de administração
+    }
+
+    // Apenas ADMIN pode ver o botão de Administração
+    if (role !== "ADMIN") {
+      if (botaoAdministracao) botaoAdministracao.style.display = "none"; // Oculta o botão de administração
+      if (navAdm) navAdm.style.display = "none"; // Oculta o botão de administração no nav
+    }
+  });
+
+    function entrarHubChapas() {
+      const role = obterRoleDoToken();
+      if (role !== "ADMIN" && role !== "MESARIO") {
+        alert("Acesso negado! Você não tem permissão para acessar esta área.");
+        window.location.href = "index.html"; // Redireciona para a página inicial
+      } else {
+        window.location.href = "hub_chapas.html"; // Redireciona para a página de gerenciamento de candidatos
+      }
+    }
+
+    function irParaAreaAdmin() {
+      const role = obterRoleDoToken();
+      if (role !== "ADMIN") {
+        alert("Acesso negado! Você não tem permissão para acessar esta área.");
+        window.location.href = "index.html"; // Redireciona para a página inicial
+      } else {
+        window.location.href = "admin.html"; // Redireciona para a página de administração
+      }
+    }
+
+    verificarAutenticacao();
   </script>
 
 </body>
