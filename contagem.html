@@ -73,15 +73,32 @@
     <nav>
       <i class="fa-solid fa-bars" onclick="toggleMenu()"></i>
       <div class="nv_est" id="menuItems">
-          <a href="hub.html">Home</a>
-          <a href="hub_chapas.html">Gerenciador de Candidatos</a>
-          <a href="hub_eleitor.html">Gerenciador de Eleitores</a>
-          <a href="id_eleitor.html">Iniciar Processo</a>
-          <a onclick="AdmPopup()" id="navAdm" class="w-full bg-yellow-500 hover:bg-yellow-600 cursor-pointer text-white py-2 px-4 rounded-lg text-md font-semibold transition white-text-imp"title="Sair do Sistema"><i class="fa-solid fa-lock mr-2"></i>Administração</a>
-          <a onclick="entrarManual()" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-lg text-md font-semibold transition white-text-imp cursor-pointer" title="Manual"><i class="fa-solid fa-book-open mr-2"></i>Manual</a>
-        <a href="index.html" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg text-md font-semibold transition white-text-imp"title="Sair do Sistema"><i class="fa-solid fa-right-from-bracket mr-2 icon-rotate"></i>Sair</a>
+        <a href="hub.html">Home</a>
+        <a href="hub_chapas.html">Gerenciador de Candidatos</a>
+        <a href="hub_eleitor.html">Gerenciador de Eleitores</a>
+        <a href="id_eleitor.html">Iniciar Processo</a>
+        <a
+          onclick="AdmPopup()"
+          id="navAdm"
+          class="w-full bg-yellow-500 hover:bg-yellow-600 cursor-pointer text-white py-2 px-4 rounded-lg text-md font-semibold transition white-text-imp"
+          title="Sair do Sistema"
+          ><i class="fa-solid fa-lock mr-2"></i>Administração</a
+        >
+        <a
+          onclick="entrarManual()"
+          class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-lg text-md font-semibold transition white-text-imp cursor-pointer"
+          title="Manual"
+          ><i class="fa-solid fa-book-open mr-2"></i>Manual</a
+        >
+        <a
+          href="index.html"
+          class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg text-md font-semibold transition white-text-imp"
+          title="Sair do Sistema"
+          ><i class="fa-solid fa-right-from-bracket mr-2 icon-rotate"></i
+          >Sair</a
+        >
       </div>
-  </nav>
+    </nav>
 
     <div class="container mx-auto p-4">
       <div
@@ -187,6 +204,10 @@
 
         fetch(`${BaseUrl}/apuracao?isApuracaoLiberada=${isApuracaoLiberada}`, {
           method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
         })
           .then((response) => {
             if (response.ok) {
@@ -194,7 +215,7 @@
               switchElement.classList.toggle("active");
               switchText.textContent = isApuracaoLiberada
                 ? "Manter resultado público"
-                : "Manter resultado privado";
+                : "Manter resultado público";
 
               localStorage.setItem("isApuracaoLiberada", isApuracaoLiberada);
             } else {
@@ -224,12 +245,26 @@
           });
 
           // presenças
-          fetch(`${BaseUrl}/presenca`, { method: "DELETE" })
+          fetch(`${BaseUrl}/presenca`, {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+          })
             .then((response) => {
               if (response.status === 204) {
                 console.log("Presenças deletadas com sucesso.");
                 // votos
-                return fetch(`${BaseUrl}/voto`, { method: "DELETE" });
+                return fetch(`${BaseUrl}/voto`, {
+                  method: "DELETE",
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem(
+                      "accessToken"
+                    )}`,
+                  },
+                });
               } else {
                 throw new Error("Falha ao deletar presenças.");
               }
@@ -240,6 +275,12 @@
                 // zerar a urna
                 return fetch(`${BaseUrl}/liberacao_urna?isUrnaLiberada=false`, {
                   method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem(
+                      "accessToken"
+                    )}`,
+                  },
                 });
               } else {
                 throw new Error("Falha ao deletar votos.");
@@ -268,7 +309,12 @@
       }
 
       function carregarListaVotos() {
-        fetch(`${BaseUrl}/voto`)
+        fetch(`${BaseUrl}/voto`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        })
           .then((response) => response.json())
           .then((data) => {
             const listaVotos = document.getElementById("lista-votos");
@@ -308,7 +354,7 @@
 
           if (isApuracaoLiberada) {
             switchElement.classList.add("active");
-            switchText.textContent = "Manter resultado privado";
+            switchText.textContent = "Manter resultado público";
           } else {
             switchElement.classList.remove("active");
             switchText.textContent = "Manter resultado público";
@@ -328,65 +374,70 @@
       });
 
       function verificarAutenticacao() {
-      const token = localStorage.getItem("accessToken");
-      if (!token) {
-        window.location.href = "index.html";
+        const token = localStorage.getItem("accessToken");
+        if (!token) {
+          window.location.href = "index.html";
+        }
       }
-    }
 
-    function obterRoleDoToken() {
-      const token = localStorage.getItem("accessToken");
-      if (!token) return null;
+      function obterRoleDoToken() {
+        const token = localStorage.getItem("accessToken");
+        if (!token) return null;
 
-      try {
-        const payloadBase64 = token.split('.')[1]; // Segunda parte do token
-        const payloadJSON = JSON.parse(atob(payloadBase64)); // Decodifica para JSON
-        return payloadJSON.scope; // Retorna a role do usuário
-      } catch (error) {
-        console.error("Erro ao decodificar o token:", error);
-        return null;
+        try {
+          const payloadBase64 = token.split(".")[1]; // Segunda parte do token
+          const payloadJSON = JSON.parse(atob(payloadBase64)); // Decodifica para JSON
+          return payloadJSON.scope; // Retorna a role do usuário
+        } catch (error) {
+          console.error("Erro ao decodificar o token:", error);
+          return null;
+        }
       }
-    }
 
-  document.addEventListener("DOMContentLoaded", () => {
-    const botaoAdmin = document.getElementById("botaoAdmin");
-    const botaoAdministracao = document.getElementById("botaoAdministracao");
-    const navAdm = document.getElementById("navAdm"); // Botão de administração no nav
-    const role = obterRoleDoToken();
+      document.addEventListener("DOMContentLoaded", () => {
+        const botaoAdmin = document.getElementById("botaoAdmin");
+        const botaoAdministracao =
+          document.getElementById("botaoAdministracao");
+        const navAdm = document.getElementById("navAdm"); // Botão de administração no nav
+        const role = obterRoleDoToken();
 
-    // Verifica se o usuário é ADMIN ou MESARIO
-    if (role !== "ADMIN" && role !== "MESARIO") {
-      if (botaoAdmin) botaoAdmin.style.display = "none"; // Oculta o botão de administração
-    }
+        // Verifica se o usuário é ADMIN ou MESARIO
+        if (role !== "ADMIN" && role !== "MESARIO") {
+          if (botaoAdmin) botaoAdmin.style.display = "none"; // Oculta o botão de administração
+        }
 
-    // Apenas ADMIN pode ver o botão de Administração
-    if (role !== "ADMIN") {
-      if (botaoAdministracao) botaoAdministracao.style.display = "none"; // Oculta o botão de administração
-      if (navAdm) navAdm.style.display = "none"; // Oculta o botão de administração no nav
-    }
-  });
+        // Apenas ADMIN pode ver o botão de Administração
+        if (role !== "ADMIN") {
+          if (botaoAdministracao) botaoAdministracao.style.display = "none"; // Oculta o botão de administração
+          if (navAdm) navAdm.style.display = "none"; // Oculta o botão de administração no nav
+        }
+      });
 
-    function entrarHubChapas() {
-      const role = obterRoleDoToken();
-      if (role !== "ADMIN" && role !== "MESARIO") {
-        alert("Acesso negado! Você não tem permissão para acessar esta área.");
-        window.location.href = "index.html"; // Redireciona para a página inicial
-      } else {
-        window.location.href = "hub_chapas.html"; // Redireciona para a página de gerenciamento de candidatos
+      function entrarHubChapas() {
+        const role = obterRoleDoToken();
+        if (role !== "ADMIN" && role !== "MESARIO") {
+          alert(
+            "Acesso negado! Você não tem permissão para acessar esta área."
+          );
+          window.location.href = "index.html"; // Redireciona para a página inicial
+        } else {
+          window.location.href = "hub_chapas.html"; // Redireciona para a página de gerenciamento de candidatos
+        }
       }
-    }
 
-    function irParaAreaAdmin() {
-      const role = obterRoleDoToken();
-      if (role !== "ADMIN") {
-        alert("Acesso negado! Você não tem permissão para acessar esta área.");
-        window.location.href = "index.html"; // Redireciona para a página inicial
-      } else {
-        window.location.href = "admin.html"; // Redireciona para a página de administração
+      function irParaAreaAdmin() {
+        const role = obterRoleDoToken();
+        if (role !== "ADMIN") {
+          alert(
+            "Acesso negado! Você não tem permissão para acessar esta área."
+          );
+          window.location.href = "index.html"; // Redireciona para a página inicial
+        } else {
+          window.location.href = "admin.html"; // Redireciona para a página de administração
+        }
       }
-    }
 
-    verificarAutenticacao();
+      verificarAutenticacao();
     </script>
   </body>
 </html>
