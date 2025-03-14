@@ -267,6 +267,8 @@
           .then((data) => {
             console.log("Resposta da API: ", data);
             alert("Senha alterada com sucesso!");
+            location.reload()
+
           })
           .catch((error) => {
             console.log(error);
