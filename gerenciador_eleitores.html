@@ -44,25 +44,25 @@
         flex-direction: column;
         justify-content: space-between;
         align-items: center;
-        max-height: 150px;
+        height: 150px;
         max-width: 160px; 
         width: 100%; 
       }
 
       .info-eleitor {
         text-align: center;
-  width: 100%;
-  font-size: 15px; /* Fonte menor */
-  line-height: 1; /* Elimina o espaçamento entre linhas */
-  margin: 0; /* Remove margens */
-  padding: 0; /* Remove padding */
-}
+        width: 100%;
+        font-size: 15px; /* Fonte menor */
+        line-height: 1; /* Elimina o espaçamento entre linhas */
+        margin: 0; /* Remove margens */
+        padding: 0; /* Remove padding */
+      }
 
-.info-eleitor p {
-  margin: 0; /* Remove margens dos parágrafos */
-  padding: 0; /* Remove padding dos parágrafos */
-  text-overflow: ellipsis; /* Adiciona reticências se o texto for muito longo */
-}
+      .info-eleitor p {
+        margin: 0; /* Remove margens dos parágrafos */
+        padding: 0; /* Remove padding dos parágrafos */
+        text-overflow: ellipsis; /* Adiciona reticências se o texto for muito longo */
+      }
 
 
       .card-actions {
@@ -103,30 +103,29 @@
       }
 
       .scrollable-container {
-    max-height: 450px;
-    overflow-y: auto;
-    height: 800px;
-    width: 700px;
-}
+        max-height: 450px;
+        overflow-y: auto;
+        height: 800px;
+        width: 700px;
+      }
 
+      .scrollable-container::-webkit-scrollbar {
+          width: 8px; 
+      }
 
-.scrollable-container::-webkit-scrollbar {
-    width: 8px; 
-}
+      .scrollable-container::-webkit-scrollbar-track {
+          background: none;
+          border-radius: 10px;
+      }
 
-.scrollable-container::-webkit-scrollbar-track {
-    background: none;
-    border-radius: 10px;
-}
+      .scrollable-container::-webkit-scrollbar-thumb {
+          background: #888; 
+          border-radius: 10px;
+      }
 
-.scrollable-container::-webkit-scrollbar-thumb {
-    background: #888; 
-    border-radius: 10px;
-}
-
-.scrollable-container::-webkit-scrollbar-thumb:hover {
-    background: #555; 
-}
+      .scrollable-container::-webkit-scrollbar-thumb:hover {
+          background: #555; 
+      }
     </style>
   </head>
 
@@ -146,7 +145,7 @@
 
     <div class="container mx-auto p-4">
       <div
-        class="bg-gray-300 rounded-lg shadow-custom p-6 max-w-14xl mx-auto relative"
+        class="bg-gray-300 rounded-lg shadow-custom p-6 mx-auto relative max-h-[650px] " style="width: 950px;" 
       >
         <div class="absolute top-4 right-4">
           <button
@@ -193,8 +192,8 @@
         
 
         <div
-  id="eleitores"
-  class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4 scrollable-container px-5" style="max-height: 450px; height: 800px; max-width: 870px; width: 900px; overflow-y: auto;"
+  id="eleitores" style="width: 900px; max-height: 350px; overflow-y: auto;"
+  class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-6 gap-4 scrollable-container px-5"
 ></div>
 
         <div id="semEleitores" class="mensagem-centralizada">
@@ -229,6 +228,7 @@
         </div>
       </div>
 
+      <!-- Edição -->
       <div
         id="editPopup"
         class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden"
@@ -280,6 +280,7 @@
         </div>
       </div>
 
+      <!-- Help -->
       <div class="absolute top-4 right-4">
         <button
           class="bg-sky-700 hover:bg-sky-950 text-white py-3 px-5 rounded-lg text-md font-semibold transition border-none"
@@ -399,7 +400,7 @@
                 <div class="info-eleitor text-gray-700 text-center">
                   <p><strong>Classe:</strong> ${eleitor.ra.substring(0, 2)}</p>
                   <p><strong>RA:</strong> ${eleitor.ra}</p>
-                  <p><strong>Nome:</strong> ${eleitor.nome}</p>
+                  <p class="line-clamp-3"><strong>Nome:</strong> ${eleitor.nome}</p>
                 </div>
                 <div class="card-actions">
                   <button class="select-button text-gray-600" onclick="toggleSelect('${
