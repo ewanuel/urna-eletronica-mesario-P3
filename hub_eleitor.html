@@ -48,14 +48,21 @@
         <!-- Botões principais da área do Eleitor -->
         <div class="botoes flex flex-col items-center space-y-6 mt-6">
           <button onclick="entrarCadastrarEleitor()"
+            id="btnAdicionarEleitor"
             class="w-full bg-green-500 hover:bg-green-600 text-white py-3 rounded-lg font-semibold text-lg transition"
             title="Cadastro de Eleitor">
             Adicionar eleitor
           </button>
           <button onclick="entrarGerenciadorEleitor()"
+            id="btnExibirEleitores"
             class="w-full bg-green-500 hover:bg-green-600 text-white py-3 rounded-lg font-semibold text-lg transition"
             title="Listagem de Eleitores">
             Exibir todos os eleitores
+          </button>
+          <button onclick="downloadEleitores()"
+            class="w-full bg-green-500 hover:bg-green-600 text-white py-3 rounded-lg font-semibold text-lg transition"
+            title="Listagem de Eleitores">
+            Baixar Lista de Eleitores
           </button>
         </div>
       </div>
@@ -147,6 +154,15 @@
       if (botaoAdmin) botaoAdmin.style.display = "none"; // Oculta o botão de administração
     }
 
+    if (role === "MESARIO") {
+    const btnAdicionarEleitor = document.getElementById("btnAdicionarEleitor");
+    const btnExibirEleitores = document.getElementById("btnExibirEleitores");
+
+    if (btnAdicionarEleitor) btnAdicionarEleitor.style.display = "none";
+    if (btnExibirEleitores) btnExibirEleitores.style.display = "none";
+  }
+  
+
     // Apenas ADMIN pode ver o botão de Administração
     if (role !== "ADMIN") {
       if (botaoAdministracao) botaoAdministracao.style.display = "none"; // Oculta o botão de administração
@@ -173,6 +189,42 @@
         window.location.href = "admin.html"; // Redireciona para a página de administração
       }
     }
+
+    const BaseUrl = "https://mesariobarao.squareweb.app";
+      
+    function downloadEleitores() {
+      const url = `${BaseUrl}/eleitor/export`;
+      const token = localStorage.getItem("accessToken");
+
+   
+    fetch(`${BaseUrl}/eleitor/export`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json', 
+            'Authorization': `Bearer ${token}`
+        },
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`Erro ao baixar a lista de eleitores: ${response.status} ${response.statusText}`);
+        }
+        return response.blob(); 
+    })
+    .then(blob => {
+        // Cria um link temporário para download do arquivo
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob); 
+        link.download = 'lista_eleitores.csv';
+        document.body.appendChild(link); 
+        link.click(); 
+        document.body.removeChild(link); 
+    })
+    .catch(error => {
+        console.error('Erro:', error);
+        alert(error.message); 
+    });
+  }
+
 
     verificarAutenticacao();
   </script>
