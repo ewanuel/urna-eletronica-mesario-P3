@@ -33,20 +33,15 @@
   </nav>
 
   <div class="container mx-auto p-4">
-
-    <div class="bg-gray-300 rounded-lg shadow-custom p-10 max-w-2xl mx-auto relative">
+    <div class="bg-gray-300 rounded-lg shadow-custom p-10 w-full max-w-2xl mx-auto relative">
       <div class="absolute top-4 left-4">
-        <button onclick="toggleTheme()" id="md_es"
-          class="bg-gray-600 hover:bg-black text-white py-2 px-4 rounded-full text-md font-semibold transition"
-          title="Ativar modo escuro">
-          Modo Escuro
+        <button onclick="toggleTheme()" id="md_es" class="bg-gray-600 hover:bg-black text-white py-2 px-4 rounded-full text-md font-semibold transition" title="Ativar modo escuro">
+          <i class="fa-solid fa-sun" aria-hidden="true"></i> Modo Claro
         </button>
       </div>
       <div class="absolute top-4 right-4">
-        <button onclick="hubSair()"
-          class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-full text-md font-semibold transition"
-          title="Página anterior">
-          <i class="fa-solid fa-right-from-bracket mr-2 icon-rotate"></i> Sair
+        <button onclick="hubSair()" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-full text-md font-semibold transition" title="Página anterior">
+          <i class="fa-solid fa-right-from-bracket mr-2 icon-rotate" aria-hidden="true"></i> Sair
         </button>
       </div>
       <div class="text-center space-y-8 mt-6">
@@ -54,16 +49,13 @@
           <h2 class="text-gray-700 font-bold text-2xl mb-4">
             Gestão do Sistema
           </h2>
-          <button id="botaoAdmin" onclick="entrarHubChapas()"
-            class="w-full bg-green-500 hover:bg-green-600 text-white py-3 rounded-lg font-semibold text-lg transition">
+          <button id="botaoAdmin" onclick="entrarHubChapas()" class="w-full bg-green-500 hover:bg-green-600 text-white py-3 rounded-lg font-semibold text-lg transition">
             Gerenciar Candidatos
           </button>
-          <button onclick="entrarHubEleitor()"
-            class="w-full bg-green-500 hover:bg-green-600 text-white py-3 rounded-lg font-semibold text-lg mt-4 transition">
+          <button onclick="entrarHubEleitor()" class="w-full bg-green-500 hover:bg-green-600 text-white py-3 rounded-lg font-semibold text-lg mt-4 transition">
             Gerenciar Eleitores
           </button>
-          <button id="botaoAdministracao" onclick="Adm()"
-            class="w-full bg-yellow-500 hover:bg-yellow-600 text-white py-3 rounded-lg font-semibold text-lg mt-4 transition">
+          <button id="botaoAdministracao" onclick="Adm()" class="w-full bg-yellow-500 hover:bg-yellow-600 text-white py-3 rounded-lg font-semibold text-lg mt-4 transition">
             Administração
           </button>
         </div>
